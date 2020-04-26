@@ -9,7 +9,8 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "eslint --ext .ts,.tsx ."
+    "lint": "eslint --ext .ts,.tsx,.js,.jsx src --color",
+    "format": "prettier --write"
   },
   "keywords": [],
   "author": {
@@ -17,6 +18,20 @@
     "email": "o@0x1.ooo"
   },
   "license": "GPL-3.0-or-later",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "{src,test,mocks}/**/*.{json,css,scss,md}": [
+      "prettier --write"
+    ],
+    "{src,test,mocks}/**/*.{js,ts,tsx}": [
+      "prettier --write",
+      "eslint --ext .ts,.tsx,.js,.jsx src"
+    ]
+  },
   "config": {
     "forge": {
       "packagerConfig": {},
@@ -74,18 +89,34 @@
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.6",
     "@types/react-hot-loader": "^4.1.1",
-    "@typescript-eslint/eslint-plugin": "^2.18.0",
-    "@typescript-eslint/parser": "^2.18.0",
+    "@typescript-eslint/eslint-plugin": "2.29.0",
+    "@typescript-eslint/parser": "2.29.0",
+    "babel-eslint": "10.1.0",
     "babel-loader": "^8.1.0",
     "css-loader": "^3.5.3",
     "electron": "8.2.3",
     "electron-devtools-installer": "^3.0.0",
-    "eslint": "^6.8.0",
-    "eslint-plugin-import": "^2.20.0",
+    "eslint": "6.8.0",
+    "eslint-config-airbnb": "18.1.0",
+    "eslint-config-airbnb-typescript": "7.2.1",
+    "eslint-config-prettier": "6.11.0",
+    "eslint-config-react-app": "5.2.1",
+    "eslint-import-resolver-typescript": "2.0.0",
+    "eslint-loader": "4.0.2",
+    "eslint-plugin-flowtype": "4.7.0",
+    "eslint-plugin-import": "2.20.2",
+    "eslint-plugin-jsx-a11y": "6.2.3",
+    "eslint-plugin-prettier": "3.1.3",
+    "eslint-plugin-react": "7.19.0",
+    "eslint-plugin-react-hooks": "3.0.0",
     "fork-ts-checker-webpack-plugin": "^3.1.1",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.1.7",
     "node-loader": "^0.6.0",
     "node-sass": "^4.14.0",
-    "react-hot-loader": "^4.12.20",
+    "prettier": "2.0.5",
+    "prettier-eslint": "9.0.1",
+    "prettier-eslint-cli": "5.0.0",
     "react-scripts": "^3.4.1",
     "sass-loader": "^8.0.2",
     "style-loader": "^1.2.0",
@@ -93,9 +124,11 @@
     "typescript": "^3.7.0"
   },
   "dependencies": {
+    "electron-is-dev": "^1.2.0",
     "electron-squirrel-startup": "^1.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-hot-loader": "^4.12.20",
     "react-router-dom": "^5.1.2"
   }
 }

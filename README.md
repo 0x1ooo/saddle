@@ -1,5 +1,5 @@
 # Saddle
 
-Saddle是一个使用Electron开发的桌面Trojan客户端。
+Saddle 是一个使用 Electron 开发的桌面 Trojan 客户端。
 
-*** 🚧 WORK IN PROGRESS 🚧 👷 👋 ***
+**_🚧 WORK IN PROGRESS 🚧 👷 👋_**

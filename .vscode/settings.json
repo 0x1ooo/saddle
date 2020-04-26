@@ -1,4 +1,5 @@
 {
     "terminal.integrated.shell.windows": "powershell.exe",
-    "terminal.integrated.automationShell.windows": "powershell.exe"
+    "terminal.integrated.automationShell.windows": "powershell.exe",
+    "editor.tabSize": 2
 }
