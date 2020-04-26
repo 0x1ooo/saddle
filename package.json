@@ -29,7 +29,7 @@
     ],
     "{src,test,mocks}/**/*.{js,ts,tsx}": [
       "prettier --write",
-      "eslint --ext .ts,.tsx,.js,.jsx src"
+      "eslint --ext .ts,.tsx,.js,.jsx --fix src"
     ]
   },
   "config": {
@@ -64,7 +64,7 @@
             "renderer": {
               "config": "./webpack.renderer.config.js",
               "entryPoints": [{
-                "html": "./public/index.html",
+                "html": "./assets/index.html",
                 "js": "./src/renderer/renderer.tsx",
                 "name": "main_window"
               }]
@@ -93,6 +93,7 @@
     "@typescript-eslint/parser": "2.29.0",
     "babel-eslint": "10.1.0",
     "babel-loader": "^8.1.0",
+    "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.5.3",
     "electron": "8.2.3",
     "electron-devtools-installer": "^3.0.0",

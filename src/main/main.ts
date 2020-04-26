@@ -2,6 +2,7 @@ import { app, BrowserWindow } from 'electron';
 import isDev from 'electron-is-dev';
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
+declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 /* eslint-disable-next-line global-require */
@@ -18,10 +19,11 @@ async function createWindow(): Promise<void> {
   }
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    height: 1080,
-    width: 1440,
+    width: 1080,
+    height: 900,
     webPreferences: {
       nodeIntegration: true,
+      preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },
   });
 
@@ -29,9 +31,9 @@ async function createWindow(): Promise<void> {
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   // Open the DevTools.
-  if (isDev) {
-    mainWindow.webContents.openDevTools();
-  }
+  // if (isDev) {
+  mainWindow.webContents.openDevTools();
+  // }
 
   console.log('saddle launched');
 }
