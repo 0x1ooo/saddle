@@ -17,7 +17,6 @@ module.exports = {
   resolve: {
     alias: {
       '@main': srcPaths('src/main'),
-      '@models': srcPaths('src/models'),
       '@renderer': srcPaths('src/renderer'),
     },
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json']
