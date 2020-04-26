@@ -25,7 +25,17 @@
  *  });
  * ```
  */
-
-import './index.css';
+import * as React from "react";
+import ReactDOM from "react-dom";
+import { AppContainer } from "react-hot-loader";
+import App from "./components/App";
+import "./index.scss";
 
 console.log('👋 This message is being logged by "renderer.js", included via webpack');
+
+ReactDOM.render(
+    <AppContainer>
+        <App />
+    </AppContainer>,
+    document.getElementById("root")
+);

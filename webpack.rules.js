@@ -6,7 +6,9 @@ module.exports = [
   },
   {
     test: /\.(m?js|node)$/,
-    parser: { amd: false },
+    parser: {
+      amd: false
+    },
     use: {
       loader: '@marshallofsound/webpack-asset-relocator-loader',
       options: {
@@ -17,11 +19,31 @@ module.exports = [
   {
     test: /\.tsx?$/,
     exclude: /(node_modules|\.webpack)/,
-    use: {
+    loaders: [{
+      loader: 'babel-loader'
+    }, {
       loader: 'ts-loader',
       options: {
         transpileOnly: true
       }
-    }
+    }],
+  },
+  {
+    test: /\.(scss|css)$/,
+    use: ["style-loader", "css-loader", "sass-loader"],
+  },
+  {
+    test: /\.(svg|ico|icns)$/,
+    loader: "file-loader",
+    options: {
+      name: "[path][name].[ext]",
+    },
+  },
+  {
+    test: /\.(jpg|png|woff|woff2|eot|ttf)$/,
+    loader: "url-loader",
+    options: {
+      name: "[path][name].[ext]",
+    },
   },
 ];
