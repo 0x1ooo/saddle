@@ -7,7 +7,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: prepare docker
-        uses: docker://12-alpine
+        uses: docker://node:12-alpine
       - name: Install dependencies
         run: yarn install
       - name: Main process tests
