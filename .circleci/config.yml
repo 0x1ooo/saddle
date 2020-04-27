@@ -9,14 +9,14 @@ jobs:
           name: Install dependencies
           command: yarn
       - run:
-          name: Build project
-          command: yarn package
-      - run:
-          name: Test main process
+          name: Test the main process
           command: yarn test.main
       - run:
-          name: Test renderer process
+          name: Test the renderer process
           command: yarn test.renderer
+      - run:
+          name: Test-build the app package
+          command: yarn package
 workflows:
   build-and-test:
     jobs:
