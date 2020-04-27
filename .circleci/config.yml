@@ -3,14 +3,14 @@ orbs:
   node: circleci/node@2.0.3
 jobs:
   build-and-test:
-    executor:
-      name: node/default
+    executor: node/default
     steps:
       - checkout
-      - node/with-cache:
-          steps:
-            - run: yarn install
-            - run: yarn test.renderer
+      - node/install-packages:
+          pkg-manager: yarn
+      - run:
+          name: Test renderer process
+          command: yarn test.renderer
 workflows:
   build-and-test:
     jobs:
