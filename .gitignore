@@ -87,3 +87,6 @@ typings/
 
 # Electron-Forge
 out/
+
+# Vendor resources that should be downloaded
+vendor/trojan
