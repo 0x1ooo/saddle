@@ -1,0 +1,19 @@
+name: build
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out latest repo
+        uses: actions/checkout@v2
+      - name: Get docker image
+        uses: docker://circleci/node:lts-browsers
+      - name: Install dependencies
+        run: yarn
+      - name: Test the main process
+        run: yarn test.main
+      - name: Test the renderer process
+        run: yarn test.renderer
+      - name: Test-build the app package
+        run: yarn package
