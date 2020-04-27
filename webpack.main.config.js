@@ -1,5 +1,6 @@
 const path = require('path');
 const rules = require('./webpack.rules');
+const plugins = require('./webpack.plugins');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 function srcPaths(src) {
@@ -17,7 +18,7 @@ module.exports = {
     rules,
   },
   plugins: [
-    ...this.plugins,
+    ...plugins,
     new CopyWebpackPlugin([{
       from: path.join(__dirname, 'vendor/**'),
       to: path.join(__dirname, '.webpack/main'),

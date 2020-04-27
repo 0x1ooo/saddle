@@ -1,5 +1,6 @@
 import { app, BrowserWindow } from 'electron';
 import isDev from 'electron-is-dev';
+import { cleanupTrojanService, initTrojanService } from './trojan';
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
@@ -35,7 +36,14 @@ async function createWindow(): Promise<void> {
   mainWindow.webContents.openDevTools();
   // }
 
-  console.log('saddle launched');
+  await initTrojanService();
+
+  console.log('saddle launched.');
+}
+
+async function cleanup() {
+  await cleanupTrojanService();
+  console.log('bye.');
 }
 
 // This method will be called when Electron has finished
@@ -60,5 +68,6 @@ app.on('activate', () => {
   }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
+process.on('exit', cleanup);
+process.on('SIGINT', cleanup);
+process.on('SIGTERM', cleanup);

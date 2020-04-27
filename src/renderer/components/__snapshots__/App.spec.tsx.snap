@@ -13,7 +13,14 @@ exports[`app page matches previous snapshot 1`] = `
       src="/img/logo.svg"
     />
     <p>
-      Ready to go! 🍻️
+      Ready to go!
+       
+      <span
+        aria-label="cheers!"
+        role="img"
+      >
+        🍻️
+      </span>
     </p>
     <p>
       Edit 
@@ -30,6 +37,18 @@ exports[`app page matches previous snapshot 1`] = `
     >
       Learn React
     </a>
+    <button
+      onClick={[Function]}
+      type="button"
+    >
+      启动/重启
+    </button>
+    <button
+      onClick={[Function]}
+      type="button"
+    >
+      停止
+    </button>
   </header>
 </div>
 `;

@@ -13,7 +13,8 @@
     "format": "prettier --write",
     "test.patch": "node scripts/fix-jest-electron-bug.js",
     "test.main": "yarn test.patch && yarn jest src/main --notify --config=jest.main.config.js --detectOpenHandles --passWithNoTests",
-    "test.renderer": "yarn test.patch && yarn jest src/renderer --notify --config=jest.renderer.config.js --detectOpenHandles --passWithNoTests"
+    "test.renderer": "yarn test.patch && yarn jest \"src/(renderer|@common)\" --notify --config=jest.renderer.config.js --detectOpenHandles --passWithNoTests",
+    "test.renderer.u": "yarn test.renderer -u"
   },
   "keywords": [],
   "author": {
@@ -81,6 +82,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/preset-env": "^7.9.5",
     "@babel/preset-react": "^7.9.4",
     "@electron-forge/cli": "6.0.0-beta.50",
