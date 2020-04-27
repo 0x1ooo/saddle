@@ -1,12 +1,13 @@
-import * as React from 'react';
+import React from 'react';
 import { hot } from 'react-hot-loader';
-import asset from '../asset';
+import asset from '../utils/asset';
 import './app.scss';
 
 const App = () => (
   <div className="App">
     <header className="App-header">
       <img src={asset('/img/logo.svg')} className="App-logo" alt="logo" />
+      <p>Ready to go! 🍻️</p>
       <p>
         Edit <code>src/App.tsx</code> and save to reload!
       </p>
