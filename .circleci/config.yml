@@ -10,7 +10,7 @@ jobs:
           command: yarn
       - run:
           name: Test renderer process
-          command: yarn test.renderer
+          command: xvfb yarn test.renderer
 workflows:
   build-and-test:
     jobs:
