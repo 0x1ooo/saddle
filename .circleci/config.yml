@@ -1,17 +1,36 @@
+# version: 2.1
+# jobs:
+#   build_test:
+#     docker:
+#       - image: electronuserland/builder:wine
+#     steps:
+#       - checkout
+#       - run:
+#           name: Install dependencies
+#           command: yarn
+#       - run:
+#           name: Test renderer process
+#           command: xvfb yarn test.renderer
+# workflows:
+#   build-and-test:
+#     jobs:
+#       - build_test
+
 version: 2.1
+orbs:
+  node: circleci/node@2.0.3
 jobs:
-  build_test:
-    docker:
-      - image: electronuserland/builder:wine
+  build-and-test:
+    executor: node/default
     steps:
       - checkout
-      - run:
-          name: Install dependencies
-          command: yarn
+      - node/install-packages:
+          pkg-manager: yarn
+          cache-key: yarn.lock
       - run:
           name: Test renderer process
           command: xvfb yarn test.renderer
 workflows:
   build-and-test:
     jobs:
-      - build_test
+      - build-and-test
