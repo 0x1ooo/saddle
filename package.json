@@ -12,8 +12,8 @@
     "lint": "eslint --ext .ts,.tsx,.js,.jsx src --color",
     "format": "prettier --write",
     "test.patch": "node scripts/fix-jest-electron-bug.js",
-    "test.main": "yarn test.patch && yarn jest src/main --notify --config=jest.main.config.js --detectOpenHandles",
-    "test.renderer": "yarn test.patch && yarn jest src/renderer --notify --config=jest.renderer.config.js --detectOpenHandles"
+    "test.main": "yarn test.patch && yarn jest src/main --notify --config=jest.main.config.js --detectOpenHandles --passWithNoTests",
+    "test.renderer": "yarn test.patch && yarn jest src/renderer --notify --config=jest.renderer.config.js --detectOpenHandles --passWithNoTests"
   },
   "keywords": [],
   "author": {
@@ -38,8 +38,7 @@
   "config": {
     "forge": {
       "packagerConfig": {},
-      "makers": [
-        {
+      "makers": [{
           "name": "@electron-forge/maker-squirrel",
           "config": {
             "name": "saddle"
@@ -67,13 +66,11 @@
             "mainConfig": "./webpack.main.config.js",
             "renderer": {
               "config": "./webpack.renderer.config.js",
-              "entryPoints": [
-                {
-                  "html": "./assets/index.html",
-                  "js": "./src/renderer/renderer.tsx",
-                  "name": "main_window"
-                }
-              ]
+              "entryPoints": [{
+                "html": "./assets/index.html",
+                "js": "./src/renderer/renderer.tsx",
+                "name": "main_window"
+              }]
             },
             "port": 9876,
             "loggerPort": 9877

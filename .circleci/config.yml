@@ -1,0 +1,23 @@
+version: 2.1
+jobs:
+  build_test:
+    docker:
+      - image: circleci/node:lts-browsers
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: yarn
+      - run:
+          name: Test the main process
+          command: yarn test.main
+      - run:
+          name: Test the renderer process
+          command: yarn test.renderer
+      - run:
+          name: Test-build the app package
+          command: yarn package
+workflows:
+  build-and-test:
+    jobs:
+      - build_test
