@@ -38,8 +38,7 @@
   "config": {
     "forge": {
       "packagerConfig": {},
-      "makers": [
-        {
+      "makers": [{
           "name": "@electron-forge/maker-squirrel",
           "config": {
             "name": "saddle"
@@ -67,13 +66,11 @@
             "mainConfig": "./webpack.main.config.js",
             "renderer": {
               "config": "./webpack.renderer.config.js",
-              "entryPoints": [
-                {
-                  "html": "./assets/index.html",
-                  "js": "./src/renderer/renderer.tsx",
-                  "name": "main_window"
-                }
-              ]
+              "entryPoints": [{
+                "html": "./assets/index.html",
+                "js": "./src/renderer/renderer.tsx",
+                "name": "main_window"
+              }]
             },
             "port": 9876,
             "loggerPort": 9877

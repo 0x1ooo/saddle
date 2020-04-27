@@ -1,6 +1,9 @@
 {
     "terminal.integrated.shell.windows": "powershell.exe",
     "terminal.integrated.automationShell.windows": "powershell.exe",
+    "terminal.integrated.env.windows": {
+        "ELECTRON_MIRROR": "https://cdn.npm.taobao.org/dist/electron/"
+    },
     "editor.tabSize": 2,
     "editor.formatOnSave": true,
     "[typescript]": {
