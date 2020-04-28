@@ -1,8 +1,8 @@
+import { M2R, R2M } from '@common/ipc-protocol';
 import { ipcRenderer } from 'electron';
 import React from 'react';
 import { hot } from 'react-hot-loader';
-import { M2R, R2M } from '../../@common/ipc-protocol';
-import asset from '../utils/asset';
+import { asset } from 'renderer/utils/assets-helper';
 import './app.scss';
 
 const App = () => (

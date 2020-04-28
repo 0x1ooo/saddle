@@ -1,7 +1,7 @@
 import isDev from 'electron-is-dev';
 import path from 'path';
 
-export default function asset(filename: string): string {
+export function asset(filename: string): string {
   if (!filename) {
     return filename;
   }
@@ -11,5 +11,7 @@ export default function asset(filename: string): string {
   "/img/logo.svg"
     `);
   }
-  return isDev ? filename : path.resolve(__dirname, '..', path.relative('/', filename));
+  return isDev
+    ? filename
+    : path.resolve(__dirname, '..', path.relative('/', filename));
 }

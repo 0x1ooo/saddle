@@ -1,6 +1,6 @@
 import { app, BrowserWindow } from 'electron';
 import isDev from 'electron-is-dev';
-import { cleanupTrojanService, initTrojanService } from './trojan';
+import { cleanupTrojanService, initTrojanService } from 'main/trojan';
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;

@@ -13,7 +13,7 @@
     "format": "prettier --write",
     "test.patch": "node scripts/fix-jest-electron-bug.js",
     "test.main": "yarn test.patch && yarn jest src/main --notify --config=jest.main.config.js --detectOpenHandles --passWithNoTests",
-    "test.renderer": "yarn test.patch && yarn jest \"src/(renderer|@common)\" --notify --config=jest.renderer.config.js --detectOpenHandles --passWithNoTests",
+    "test.renderer": "yarn test.patch && yarn jest src/renderer --notify --config=jest.renderer.config.js --detectOpenHandles --passWithNoTests",
     "test.renderer.u": "yarn test.renderer -u"
   },
   "keywords": [],

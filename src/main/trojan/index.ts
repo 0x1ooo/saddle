@@ -1,5 +1,5 @@
+import { R2M } from '@common/ipc-protocol';
 import { ipcMain } from 'electron';
-import { R2M } from '../../@common/ipc-protocol/r2m';
 import { trojan } from './process';
 
 export async function initTrojanService() {

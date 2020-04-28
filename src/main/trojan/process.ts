@@ -1,9 +1,9 @@
+import { M2R, TrojanErrCode, TrojanError } from '@common/ipc-protocol';
 import { ChildProcess, spawn } from 'child_process';
 import { IpcMainEvent } from 'electron';
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
-import { M2R, TrojanErrCode, TrojanError } from '../../@common/ipc-protocol';
 
 const TROJAN_BASE_PATH = path.join(__dirname, 'trojan');
 const TROJAN_EXECS: { [platform: string]: string } = {
