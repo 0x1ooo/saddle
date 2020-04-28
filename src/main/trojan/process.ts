@@ -1,7 +1,9 @@
 import { M2R, ProxyCode, ProxyError } from '@common/ipc-protocol';
-import { fsExist, waitUntil } from '@common/utils/promise';
+import { fsExist } from '@common/utils/fs';
+import { waitUntil } from '@common/utils/promise';
 import { ChildProcess, spawn } from 'child_process';
 import { IpcMainEvent } from 'electron';
+import logger from 'main/log';
 import os from 'os';
 import path from 'path';
 
@@ -99,16 +101,30 @@ class TrojanService {
   }
 
   // // Trojan process event handlers ////
-  private static _onStdOut(data: any) {
-    console.log(`[trojan] ${data}`);
+  private static _onStdOut(data: Buffer) {
+    data
+      .toString()
+      .split('\n')
+      .forEach((line) => {
+        if (line.trim()) {
+          logger.trojan.debug(line);
+        }
+      });
   }
 
-  private static _onStdErr(data: any) {
-    console.error(`[trojan] ${data}`);
+  private static _onStdErr(data: Buffer) {
+    data
+      .toString()
+      .split('\n')
+      .forEach((line) => {
+        if (line.trim()) {
+          logger.trojan.error(line);
+        }
+      });
   }
 
   private _onClose(code: number | null) {
-    console.log(`<trojan exit> code ${code == null ? 0 : code}`);
+    logger.trojan.debug(`exit code ${code == null ? 0 : code}`);
     this._proc = null;
     if (code) {
       this._notify(
@@ -119,7 +135,7 @@ class TrojanService {
   }
 
   private async _onError(err: Error) {
-    console.error(`<trojan err>`, err);
+    logger.trojan.error(err);
     await this.stop();
     this._proc = null;
     this._notify(

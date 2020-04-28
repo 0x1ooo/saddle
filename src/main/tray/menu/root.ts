@@ -12,6 +12,5 @@ export function getRootMenuItems(): MenuItem[] {
 }
 
 function onQuit() {
-  console.log('on quit');
   app.quit();
 }

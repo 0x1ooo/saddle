@@ -1,8 +1,3 @@
-import fs from 'fs';
-
-export async function fsExist(path: string): Promise<boolean> {
-  return new Promise<boolean>((resolve) => fs.exists(path, resolve));
-}
 export async function sleep(ms: number): Promise<void> {
   return new Promise<void>((resolve) =>
     setTimeout(() => {

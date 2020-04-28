@@ -1,7 +1,7 @@
 import { M2R, ProxyUICommand, R2M } from '@common/ipc-protocol';
-import { fsExist } from '@common/utils/promise';
+import { ensureDirSync } from '@common/utils/fs';
 import { ipcMain, IpcMainEvent } from 'electron';
-import fs from 'fs';
+import logger from 'main/log';
 import { Disable, Global, IProxySetting, PAC } from 'main/proxy/setting';
 import { applyWin32, applyWin32Sync } from 'main/proxy/win';
 import { trojan } from 'main/trojan';
@@ -17,18 +17,7 @@ class ProxyService {
 
   async initialize() {
     this.configDir = path.join(__dirname, '../config');
-    const dirFound = await fsExist(this.configDir);
-    if (!dirFound) {
-      await new Promise<void>((resolve, reject) =>
-        fs.mkdir(this.configDir, { recursive: true }, (err) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve();
-          }
-        })
-      );
-    }
+    ensureDirSync(this.configDir);
     this._cmdListener = this._onCommand.bind(this);
     ipcMain.on(R2M.PROXY_COMMAND, this._cmdListener);
   }
@@ -42,7 +31,7 @@ class ProxyService {
   async loadSetting(cmd: ProxyUICommand) {
     // TODO: load proxy from config file
     const config = this.configDir;
-    console.log('config dir:', config);
+    logger.service.trace('config dir:', config);
     switch (cmd) {
       case ProxyUICommand.Disable:
         return new Disable();
@@ -90,7 +79,7 @@ class ProxyService {
       await trojan.stop();
       event.reply(M2R.PROXY_ERROR, e);
       trojan.detachUI();
-      console.error('failed executing proxy command: ', e);
+      logger.service.error('failed executing proxy command: ', e);
     }
   }
 }
