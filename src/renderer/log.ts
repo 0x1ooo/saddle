@@ -1,21 +1,31 @@
 import { makeLoggerOptions } from '@common/log';
 import { ensureDirSync } from '@common/utils/fs';
+import isDev from 'electron-is-dev';
 import { configure, getLogger, shutdown } from 'log4js';
 import path from 'path';
 
-const logDir = path.join(__dirname, '../log');
-const logFilename = 'main.log';
+const logDir = isDev ? '/' : path.join(__dirname, '../log');
+const logFilename = 'renderer.log';
 
 function initialize() {
   ensureDirSync(logDir);
+  const appenders = ['stdout', 'console'];
+  if (!isDev) {
+    appenders.push('file');
+  }
   const options = makeLoggerOptions(logDir, logFilename, {
-    categories: {
-      main: {
-        appenders: ['file', 'stdout'],
-        level: 'INFO',
+    appenders: {
+      console: {
+        type: 'console',
+        layout: {
+          type: 'pattern',
+          pattern: '%[[%p] %d{yyyy/MM/dd hh:mm:ss}%]\n%m',
+        },
       },
-      trojan: {
-        appenders: ['file', 'stdout'],
+    },
+    categories: {
+      ui: {
+        appenders,
         level: 'INFO',
       },
     },
@@ -26,7 +36,7 @@ async function flush() {
   return new Promise<void>((resolve) => {
     shutdown((err) => {
       if (err) {
-        console.error('main logger flush error:', err); // eslint-disable-line no-console
+        console.error('renderer logger flush error:', err); // eslint-disable-line no-console
       }
       resolve();
     });
@@ -36,7 +46,6 @@ async function flush() {
 const log = {
   initialize,
   flush,
-  main: () => getLogger('main'),
-  trojan: () => getLogger('trojan'),
+  ui: () => getLogger('ui'),
 };
 export default log;

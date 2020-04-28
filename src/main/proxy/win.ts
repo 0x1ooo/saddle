@@ -1,7 +1,7 @@
 import { fsExist } from '@common/utils/fs';
 import { spawn } from 'child_process';
 import fs from 'fs';
-import logger from 'main/log';
+import log from 'main/log';
 import { IProxySetting } from 'main/proxy/setting';
 import path from 'path';
 
@@ -17,8 +17,8 @@ export async function applyWin32(setting: IProxySetting): Promise<void> {
     const proc = spawn(SYSPROXY_PATH, setting.win32Args, {
       windowsHide: true,
     });
-    proc.stdout.on('data', logger.service.info);
-    proc.stderr.on('data', logger.service.warn);
+    proc.stdout.on('data', log.main().info);
+    proc.stderr.on('data', log.main().warn);
     proc.on('close', (code) => {
       if (!code) {
         resolve();

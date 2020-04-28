@@ -2,6 +2,7 @@ import { M2R, ProxyUICommand, R2M } from '@common/ipc-protocol';
 import { ipcRenderer } from 'electron';
 import React from 'react';
 import { hot } from 'react-hot-loader';
+import log from 'renderer/log';
 import { asset } from 'renderer/utils/assets-helper';
 import './app.scss';
 
@@ -43,9 +44,9 @@ function stop() {
   ipcRenderer.send(R2M.PROXY_COMMAND, ProxyUICommand.Disable);
 }
 
-ipcRenderer.on(M2R.PROXY_BUSY, () => console.log('[trojan] busy'));
-ipcRenderer.on(M2R.PROXY_ENABLED, () => console.log('[trojan] running'));
-ipcRenderer.on(M2R.PROXY_DISABLED, () => console.log('[trojan] stopped'));
-ipcRenderer.on(M2R.PROXY_ERROR, (_, err) => console.error('[trojan]', err));
+ipcRenderer.on(M2R.PROXY_BUSY, () => log.ui().info('[trojan] busy'));
+ipcRenderer.on(M2R.PROXY_ENABLED, () => log.ui().info('[trojan] running'));
+ipcRenderer.on(M2R.PROXY_DISABLED, () => log.ui().info('[trojan] stopped'));
+ipcRenderer.on(M2R.PROXY_ERROR, (_, err) => log.ui().error('[trojan]', err));
 
 export default hot(module)(App) as () => JSX.Element;

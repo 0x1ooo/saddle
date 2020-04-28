@@ -3,7 +3,7 @@ import { fsExist } from '@common/utils/fs';
 import { waitUntil } from '@common/utils/promise';
 import { ChildProcess, spawn } from 'child_process';
 import { IpcMainEvent } from 'electron';
-import logger from 'main/log';
+import log from 'main/log';
 import os from 'os';
 import path from 'path';
 
@@ -107,7 +107,7 @@ class TrojanService {
       .split('\n')
       .forEach((line) => {
         if (line.trim()) {
-          logger.trojan.debug(line);
+          log.trojan().debug(line);
         }
       });
   }
@@ -118,13 +118,13 @@ class TrojanService {
       .split('\n')
       .forEach((line) => {
         if (line.trim()) {
-          logger.trojan.error(line);
+          log.trojan().error(line);
         }
       });
   }
 
   private _onClose(code: number | null) {
-    logger.trojan.debug(`exit code ${code == null ? 0 : code}`);
+    log.trojan().debug(`exit code ${code == null ? 0 : code}`);
     this._proc = null;
     if (code) {
       this._notify(
@@ -135,7 +135,7 @@ class TrojanService {
   }
 
   private async _onError(err: Error) {
-    logger.trojan.error(err);
+    log.trojan().error(err);
     await this.stop();
     this._proc = null;
     this._notify(

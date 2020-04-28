@@ -1,6 +1,6 @@
 import { app, BrowserWindow } from 'electron';
 import isDev from 'electron-is-dev';
-import logger from 'main/log';
+import log from 'main/log';
 import { proxyService } from 'main/proxy';
 import { initTray } from 'main/tray';
 
@@ -13,7 +13,7 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-logger.initialize();
+log.initialize();
 
 async function createWindow(): Promise<void> {
   if (isDev) {
@@ -43,23 +43,23 @@ async function createWindow(): Promise<void> {
   initTray();
   await proxyService.initialize();
 
-  logger.service.warn('saddle launched.');
+  log.main().warn('saddle launched.');
 }
 
 /** Cleanup things in async fashion before the process exists. */
 async function cleanup(event: Event) {
-  logger.service.warn('gracefully stopping saddle...');
+  log.main().warn('gracefully stopping saddle...');
   event.preventDefault();
 
   // Async cleanup codes here
-  await logger.flush();
+  await log.flush();
 
-  logger.service.info('things have been cleaned up');
+  log.main().info('things have been cleaned up');
+  log.main().warn('bye.');
   process.exit();
 }
 async function dispose() {
   proxyService.dispose();
-  logger.service.warn('bye.');
 }
 
 // This method will be called when Electron has finished

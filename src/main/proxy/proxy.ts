@@ -1,7 +1,7 @@
 import { M2R, ProxyUICommand, R2M } from '@common/ipc-protocol';
 import { ensureDirSync } from '@common/utils/fs';
 import { ipcMain, IpcMainEvent } from 'electron';
-import logger from 'main/log';
+import log from 'main/log';
 import { Disable, Global, IProxySetting, PAC } from 'main/proxy/setting';
 import { applyWin32, applyWin32Sync } from 'main/proxy/win';
 import { trojan } from 'main/trojan';
@@ -31,7 +31,7 @@ class ProxyService {
   async loadSetting(cmd: ProxyUICommand) {
     // TODO: load proxy from config file
     const config = this.configDir;
-    logger.service.trace('config dir:', config);
+    log.main().trace('config dir:', config);
     switch (cmd) {
       case ProxyUICommand.Disable:
         return new Disable();
@@ -79,7 +79,7 @@ class ProxyService {
       await trojan.stop();
       event.reply(M2R.PROXY_ERROR, e);
       trojan.detachUI();
-      logger.service.error('failed executing proxy command: ', e);
+      log.main().error('failed executing proxy command: ', e);
     }
   }
 }
