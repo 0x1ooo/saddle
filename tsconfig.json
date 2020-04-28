@@ -19,7 +19,8 @@
     ],
     "resolveJsonModule": true,
     "paths": {
-      "assets/*": ["./assets/*"],
+      "main/*": ["src/main/*"],
+      "renderer/*": ["src/renderer/*"],
       "*": ["node_modules/*"]
     }
   },
