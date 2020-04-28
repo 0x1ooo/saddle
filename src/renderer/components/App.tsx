@@ -37,10 +37,10 @@ const App = () => (
 );
 
 function start() {
-  ipcRenderer.send(R2M.START_PROXY, ProxyUICommand.Global);
+  ipcRenderer.send(R2M.PROXY_COMMAND, ProxyUICommand.Global);
 }
 function stop() {
-  ipcRenderer.send(R2M.STOP_PROXY);
+  ipcRenderer.send(R2M.PROXY_COMMAND, ProxyUICommand.Disable);
 }
 
 ipcRenderer.on(M2R.PROXY_BUSY, () => console.log('[trojan] busy'));

@@ -1,6 +1,6 @@
 import { app, BrowserWindow } from 'electron';
 import isDev from 'electron-is-dev';
-import { cleanupProxy, initProxy } from 'main/proxy';
+import { proxyService } from 'main/proxy';
 import { initTray } from 'main/tray';
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -38,13 +38,24 @@ async function createWindow(): Promise<void> {
   // }
 
   initTray();
-  await initProxy();
+  await proxyService.initialize();
 
   console.log('saddle launched.');
 }
 
-async function cleanup() {
-  await cleanupProxy();
+/** Cleanup things in async fashion before the process exists. */
+async function cleanup(event: Event) {
+  console.log('gracefully stopping saddle...');
+  event.preventDefault();
+
+  // Cleanup codes here
+
+  console.log('things have been cleaned up');
+  process.exit();
+}
+async function dispose() {
+  console.log('disposing...');
+  proxyService.dispose();
   console.log('bye.');
 }
 
@@ -54,13 +65,7 @@ async function cleanup() {
 app.on('ready', createWindow);
 
 // Quit when all windows are closed.
-app.on('window-all-closed', () => {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
+app.on('window-all-closed', () => {});
 
 app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the
@@ -70,6 +75,7 @@ app.on('activate', () => {
   }
 });
 
-process.on('exit', cleanup);
-process.on('SIGINT', cleanup);
-process.on('SIGTERM', cleanup);
+app.on('before-quit', cleanup);
+process.on('exit', dispose);
+process.on('SIGINT', dispose);
+process.on('SIGTERM', dispose);

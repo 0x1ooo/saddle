@@ -19,7 +19,6 @@ test('GLOBAL proxy gives win32 args', () => {
   ]);
 });
 test('PAC proxy gives win32 args', () => {
-  console.log(MOCKS.pac);
   const pac = new PAC(MOCKS.pac);
   expect(pac.win32Args).toEqual(['pac', MOCKS.pac]);
 });

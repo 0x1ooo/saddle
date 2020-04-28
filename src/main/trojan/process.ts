@@ -1,7 +1,7 @@
-import { M2R, TrojanErrCode, TrojanError } from '@common/ipc-protocol';
+import { M2R, ProxyCode, ProxyError } from '@common/ipc-protocol';
+import { fsExist, waitUntil } from '@common/utils/promise';
 import { ChildProcess, spawn } from 'child_process';
 import { IpcMainEvent } from 'electron';
-import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
@@ -21,11 +21,11 @@ class TrojanService {
 
   private _proc: ChildProcess | null = null;
 
-  registerEvent(event: IpcMainEvent) {
+  attachUI(event: IpcMainEvent) {
     this._uiEvent = event;
   }
 
-  clearEvent() {
+  detachUI() {
     this._uiEvent = null;
   }
 
@@ -34,55 +34,58 @@ class TrojanService {
   }
 
   async start() {
-    try {
-      this._notify(M2R.PROXY_BUSY);
-      await this.stop(true);
-      const { entry, config } = getTrojanPath();
-      const entryFound = await new Promise<boolean>((resolve) =>
-        fs.exists(entry, resolve)
+    this._notify(M2R.PROXY_BUSY);
+    await this._stop();
+    const { entry, config } = getTrojanPath();
+    const entryFound = await fsExist(entry);
+    if (!entryFound) {
+      throw new ProxyError(
+        ProxyCode.TrojanNotFound,
+        `Trojan not found at ${entry}`
       );
-      if (!entryFound) {
-        throw new TrojanError(
-          TrojanErrCode.ExecNotFound,
-          `Trojan not found at ${entry}`
-        );
-      }
-      const proc = spawn(entry, ['-config', config], { windowsHide: true });
-      if (!proc) {
-        throw new Error(`Trojan process not spawned`);
-      }
+    }
+    const proc = spawn(entry, ['-config', config], { windowsHide: true });
+    if (!proc) {
+      throw new ProxyError(
+        ProxyCode.TrojanNotSpawned,
+        `Trojan process not spawned`
+      );
+    }
 
-      proc.stdout.on('data', TrojanService._onStdOut.bind(this));
-      proc.stderr.on('data', TrojanService._onStdErr.bind(this));
-      proc.on('close', this._onClose.bind(this));
-      proc.on('error', this._onError.bind(this));
-      this._proc = proc;
+    proc.stdout.on('data', TrojanService._onStdOut.bind(this));
+    proc.stderr.on('data', TrojanService._onStdErr.bind(this));
+    proc.on('close', this._onClose.bind(this));
+    proc.on('error', this._onError.bind(this));
+    this._proc = proc;
 
-      // Wait trojan-go to finish the startup process
-      setTimeout(() => {
-        if (this.alive) {
-          this._notify(M2R.PROXY_ENABLED);
-        }
-      }, 1000);
-    } catch (e) {
-      console.error(`<trojan err>`, e);
-      this._notify(M2R.PROXY_ERROR, e);
-      this.stop(true);
-      throw e;
+    // Ensure trojan-go has finished the startup process and not terminated on error
+    setTimeout(() => {
+      if (this.alive) {
+        this._notify(M2R.PROXY_ENABLED);
+      }
+    }, 500);
+  }
+
+  async stop() {
+    this._notify(M2R.PROXY_BUSY);
+    await this._stop();
+    this._notify(M2R.PROXY_DISABLED);
+  }
+
+  dispose() {
+    this.detachUI();
+    this._stop();
+  }
+
+  private async _stop() {
+    if (this.alive) {
+      this._proc!.kill();
+      await this._waitClose();
     }
   }
 
-  async stop(silent = false) {
-    if (!silent) {
-      this._notify(M2R.PROXY_BUSY);
-    }
-    if (this.alive) {
-      this._proc!.kill();
-      this._proc = null;
-    }
-    if (!silent) {
-      this._notify(M2R.PROXY_DISABLED);
-    }
+  private async _waitClose() {
+    await waitUntil(() => !this._proc, 100, 10000);
   }
 
   /** Notify a Trojan status to the UI process if any
@@ -105,12 +108,12 @@ class TrojanService {
   }
 
   private _onClose(code: number | null) {
-    console.log(`<trojan exit> code ${code}`);
+    console.log(`<trojan exit> code ${code == null ? 0 : code}`);
     this._proc = null;
     if (code) {
       this._notify(
         M2R.PROXY_ERROR,
-        new TrojanError(TrojanErrCode.InternalError, `exit code ${code}`)
+        new ProxyError(ProxyCode.TrojanInternalError, `exit code ${code}`)
       );
     }
   }
@@ -121,7 +124,7 @@ class TrojanService {
     this._proc = null;
     this._notify(
       M2R.PROXY_ERROR,
-      new TrojanError(TrojanErrCode.InternalError, err.message)
+      new ProxyError(ProxyCode.TrojanInternalError, err.message)
     );
   }
 }

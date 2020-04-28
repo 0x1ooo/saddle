@@ -39,7 +39,8 @@
   "config": {
     "forge": {
       "packagerConfig": {},
-      "makers": [{
+      "makers": [
+        {
           "name": "@electron-forge/maker-squirrel",
           "config": {
             "name": "saddle"
@@ -67,11 +68,13 @@
             "mainConfig": "./webpack.main.config.js",
             "renderer": {
               "config": "./webpack.renderer.config.js",
-              "entryPoints": [{
-                "html": "./assets/index.html",
-                "js": "./src/renderer/renderer.tsx",
-                "name": "main_window"
-              }]
+              "entryPoints": [
+                {
+                  "html": "./assets/index.html",
+                  "js": "./src/renderer/renderer.tsx",
+                  "name": "main_window"
+                }
+              ]
             },
             "port": 9876,
             "loggerPort": 9877
@@ -103,6 +106,7 @@
     "@types/react-test-renderer": "^16.9.2",
     "@typescript-eslint/eslint-plugin": "2.29.0",
     "@typescript-eslint/parser": "2.29.0",
+    "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.1.0",
     "babel-jest": "^25.4.0",
     "babel-loader": "^8.1.0",
@@ -135,6 +139,7 @@
     "prettier-eslint-cli": "5.0.0",
     "react-scripts": "^3.4.1",
     "react-test-renderer": "^16.13.1",
+    "regenerator-runtime": "^0.13.5",
     "sass-loader": "^8.0.2",
     "style-loader": "^1.2.0",
     "ts-loader": "^6.2.1",

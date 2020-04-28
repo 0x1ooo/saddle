@@ -2,14 +2,12 @@
 
 /* Renderer -> Main IPC Messages */
 export class R2M {
-  static readonly START_PROXY = 'ask-start-proxy';
-
-  static readonly STOP_PROXY = 'ask-stop-proxy';
+  static readonly PROXY_COMMAND = 'ask-proxy-command';
 }
 
 /** Enums of the commands sent by UI process for proxy controlling */
 export enum ProxyUICommand {
+  Disable,
   Global,
   PAC,
-  Disable,
 }
