@@ -85,9 +85,13 @@ class TrojanService {
     }
   }
 
-  private _notify(msg: string, args?: any) {
+  /** Notify a Trojan status to the UI process if any
+   * @param m2r An IPC Message of M2R.*
+   * @param args Additional data to be intepreted by the renderer process listener
+   */
+  private _notify(m2r: string, ...args: any[]) {
     if (this._uiEvent) {
-      this._uiEvent.reply(msg, args);
+      this._uiEvent.reply(m2r, ...args);
     }
   }
 

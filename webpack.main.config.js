@@ -24,6 +24,10 @@ module.exports = {
       to: path.join(__dirname, '.webpack/main'),
       context: path.join(__dirname, 'vendor'),
     }]),
+    ...['icon'].map(subdir => new CopyWebpackPlugin([{
+      from: path.resolve(__dirname, 'assets', subdir),
+      to: path.resolve(__dirname, '.webpack/main', subdir),
+    }])),
   ],
   resolve: {
     alias: {
