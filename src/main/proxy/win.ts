@@ -15,9 +15,10 @@ export async function applyWin32(setting: IProxySetting): Promise<void> {
 
   return new Promise<void>((resolve, reject) => {
     const proc = spawn(SYSPROXY_PATH, setting.win32Args, {
-      detached: true,
       windowsHide: true,
     });
+    proc.stdout.on('data', console.log);
+    proc.stderr.on('data', console.error);
     proc.on('close', (code) => {
       if (!code) {
         resolve();

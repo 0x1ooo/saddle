@@ -1,7 +1,7 @@
 import { app, BrowserWindow } from 'electron';
 import isDev from 'electron-is-dev';
+import { cleanupProxy, initProxy } from 'main/proxy';
 import { initTray } from 'main/tray';
-import { cleanupTrojanService, initTrojanService } from 'main/trojan';
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
@@ -37,14 +37,14 @@ async function createWindow(): Promise<void> {
   mainWindow.webContents.openDevTools();
   // }
 
-  await initTrojanService();
   initTray();
+  await initProxy();
 
   console.log('saddle launched.');
 }
 
 async function cleanup() {
-  await cleanupTrojanService();
+  await cleanupProxy();
   console.log('bye.');
 }
 

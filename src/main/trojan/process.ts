@@ -35,7 +35,7 @@ class TrojanService {
 
   async start() {
     try {
-      this._notify(M2R.TROJAN_BUSY);
+      this._notify(M2R.PROXY_BUSY);
       await this.stop(true);
       const { entry, config } = getTrojanPath();
       const entryFound = await new Promise<boolean>((resolve) =>
@@ -61,12 +61,12 @@ class TrojanService {
       // Wait trojan-go to finish the startup process
       setTimeout(() => {
         if (this.alive) {
-          this._notify(M2R.TROJAN_STARTED);
+          this._notify(M2R.PROXY_ENABLED);
         }
       }, 1000);
     } catch (e) {
       console.error(`<trojan err>`, e);
-      this._notify(M2R.TROJAN_ERROR, e);
+      this._notify(M2R.PROXY_ERROR, e);
       this.stop(true);
       throw e;
     }
@@ -74,14 +74,14 @@ class TrojanService {
 
   async stop(silent = false) {
     if (!silent) {
-      this._notify(M2R.TROJAN_BUSY);
+      this._notify(M2R.PROXY_BUSY);
     }
     if (this.alive) {
       this._proc!.kill();
       this._proc = null;
     }
     if (!silent) {
-      this._notify(M2R.TROJAN_STOPPED);
+      this._notify(M2R.PROXY_DISABLED);
     }
   }
 
@@ -109,7 +109,7 @@ class TrojanService {
     this._proc = null;
     if (code) {
       this._notify(
-        M2R.TROJAN_ERROR,
+        M2R.PROXY_ERROR,
         new TrojanError(TrojanErrCode.InternalError, `exit code ${code}`)
       );
     }
@@ -120,7 +120,7 @@ class TrojanService {
     await this.stop();
     this._proc = null;
     this._notify(
-      M2R.TROJAN_ERROR,
+      M2R.PROXY_ERROR,
       new TrojanError(TrojanErrCode.InternalError, err.message)
     );
   }
