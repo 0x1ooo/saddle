@@ -7,29 +7,26 @@ import {
   faWindowRestore,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Box, Button, styled as mStyle } from '@material-ui/core';
+import { Box, IconButton, styled, withTheme } from '@material-ui/core';
 import { ipcRenderer, remote } from 'electron';
 import assign from 'lodash/assign';
 import React from 'react';
 import { asset } from 'renderer/utils/assets-helper';
-import styled from 'styled-components';
-
-const DraggableBar = styled(Box)`
-  -webkit-app-region: drag;
-`;
 
 interface WindowButtonProps {
   icon: IconProp;
   onClick: () => void;
 }
 
-const SharpButton = mStyle(styled(Button)`
-  -webkit-app-region: no-drag;
-`)({ borderRadius: 0 });
+const SharpButton = styled(IconButton)({ borderRadius: 0, fontSize: 16 });
 
 function WindowButton(props: WindowButtonProps) {
   return (
-    <SharpButton onClick={props.onClick}>
+    <SharpButton
+      onClick={props.onClick}
+      color="primary"
+      className="window-interact"
+    >
       <FontAwesomeIcon icon={props.icon} />
     </SharpButton>
   );
@@ -41,7 +38,7 @@ export enum WindowButtonFlag {
   Minimize = 2,
   Maximize = 4,
   All = Close | Minimize | Maximize,
-  Toolbox = Close,
+  Tool = Close,
   NoMax = Close | Minimize,
 }
 
@@ -62,10 +59,7 @@ interface TitleBarState {
   isMaximized: boolean;
 }
 
-export default class TitleBar extends React.PureComponent<
-  TitleBarOptions,
-  TitleBarState
-> {
+class TitleBar extends React.PureComponent<TitleBarOptions, TitleBarState> {
   private _resizeListener?: any;
 
   constructor(props: TitleBarOptions) {
@@ -86,10 +80,11 @@ export default class TitleBar extends React.PureComponent<
   }
 
   render() {
+    // const theme = useTheme();
     return (
-      <DraggableBar display="flex" alignItems="stretch">
+      <Box display="flex" alignItems="stretch" paddingX={1}>
         {this.state.options.noIcon ? null : (
-          <Box padding={0.5} display="flex">
+          <Box marginRight={0.5} display="flex">
             <img src={asset('/img/logo.svg')} width={32} alt="App Logo" />
           </Box>
         )}
@@ -114,7 +109,7 @@ export default class TitleBar extends React.PureComponent<
         {this._hasButtonFlag(WindowButtonFlag.Close) ? (
           <WindowButton icon={faTimes} onClick={TitleBar._onClose} />
         ) : null}
-      </DraggableBar>
+      </Box>
     );
   }
 
@@ -144,3 +139,5 @@ export default class TitleBar extends React.PureComponent<
     return (this.state.options.buttonFlags & flag) === flag;
   }
 }
+
+export default withTheme(TitleBar);

@@ -25,19 +25,23 @@
  *  });
  * ```
  */
+import { ThemeProvider } from '@material-ui/core';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
+import ToolFrame from 'renderer/components/frame/ToolFrame';
 import log from 'renderer/log';
-import App from './components/App';
+import hotSteel from 'renderer/theme/hot-steel';
 import './index.scss';
 
 log.initialize();
 log.ui().info('This is a tool window!');
 
 ReactDOM.render(
-  <AppContainer>
-    <App />
-  </AppContainer>,
+  <ThemeProvider theme={hotSteel}>
+    <AppContainer>
+      <ToolFrame />
+    </AppContainer>
+  </ThemeProvider>,
   document.getElementById('root')
 );

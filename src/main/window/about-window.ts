@@ -14,6 +14,7 @@ export async function createAboutWindow(
     type: 'toolbar',
     parent,
     modal: !!parent,
+    frame: false,
     webPreferences: {
       nodeIntegration: true,
       preload: ABOUT_WINDOW_PRELOAD_WEBPACK_ENTRY,

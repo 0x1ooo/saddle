@@ -5,7 +5,7 @@ import { MemoryRouter, Switch } from 'react-router-dom';
 import TitleBar, { WindowButtonFlag } from 'renderer/components/frame/TitleBar';
 import { PageRoute, routes } from 'renderer/route';
 
-const MainFrame = () => {
+const ToolFrame = () => {
   const theme = useTheme();
   return (
     <MemoryRouter>
@@ -16,7 +16,7 @@ const MainFrame = () => {
           color: theme.palette.primary.light,
         }}
       >
-        <TitleBar buttonFlags={WindowButtonFlag.All} />
+        <TitleBar buttonFlags={WindowButtonFlag.Tool} noIcon={true} />
         <Switch>
           {routes.map((route) => (
             <PageRoute key={route.path} path={route.path} {...route} />
@@ -27,4 +27,4 @@ const MainFrame = () => {
   );
 };
 
-export default hot(module)(MainFrame);
+export default hot(module)(ToolFrame);
