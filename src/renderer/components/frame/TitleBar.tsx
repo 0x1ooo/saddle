@@ -9,8 +9,9 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Box, IconButton, styled, withTheme } from '@material-ui/core';
 import { ipcRenderer, remote } from 'electron';
-import assign from 'lodash/assign';
+import defaults from 'lodash/defaults';
 import React from 'react';
+import { FrameFlag } from 'renderer/components/frame/define';
 import { asset } from 'renderer/utils/assets-helper';
 
 interface WindowButtonProps {
@@ -32,26 +33,12 @@ function WindowButton(props: WindowButtonProps) {
   );
 }
 
-export enum WindowButtonFlag {
-  None = 0,
-  Close = 1,
-  Minimize = 2,
-  Maximize = 4,
-  All = Close | Minimize | Maximize,
-  Tool = Close,
-  NoMax = Close | Minimize,
-}
-
 export interface TitleBarOptions {
-  noIcon?: boolean;
-  noTitle?: boolean;
-  buttonFlags?: number;
+  frameFlags?: number;
 }
 
 const defaultOptions: TitleBarOptions = {
-  noIcon: false,
-  noTitle: false,
-  buttonFlags: WindowButtonFlag.All,
+  frameFlags: FrameFlag.Main,
 };
 
 interface TitleBarState {
@@ -59,13 +46,14 @@ interface TitleBarState {
   isMaximized: boolean;
 }
 
+/** The title bar of an app window which intends to replace the native app bar. */
 class TitleBar extends React.PureComponent<TitleBarOptions, TitleBarState> {
   private _resizeListener?: any;
 
   constructor(props: TitleBarOptions) {
     super(props);
     this.state = {
-      options: assign(defaultOptions, props),
+      options: defaults({}, props, defaultOptions),
       isMaximized: remote.getCurrentWindow().isMaximized(),
     };
   }
@@ -80,33 +68,32 @@ class TitleBar extends React.PureComponent<TitleBarOptions, TitleBarState> {
   }
 
   render() {
-    // const theme = useTheme();
     return (
       <Box display="flex" alignItems="stretch" paddingX={1}>
-        {this.state.options.noIcon ? null : (
+        {this._hasFrameFlag(FrameFlag.Icon) ? (
           <Box marginRight={0.5} display="flex">
             <img src={asset('/img/logo.svg')} width={32} alt="App Logo" />
           </Box>
-        )}
-        {this.state.options.noTitle ? null : (
+        ) : null}
+        {this._hasFrameFlag(FrameFlag.Title) ? (
           <Box alignItems="center" display="flex">
             {document.title}
           </Box>
-        )}
+        ) : null}
         <Box flex="1 1 auto" />
-        {this._hasButtonFlag(WindowButtonFlag.Minimize) ? (
+        {this._hasFrameFlag(FrameFlag.Minimize) ? (
           <WindowButton
             icon={faWindowMinimize}
             onClick={TitleBar._onMinimize}
           />
         ) : null}
-        {this._hasButtonFlag(WindowButtonFlag.Maximize) ? (
+        {this._hasFrameFlag(FrameFlag.Maximize) ? (
           <WindowButton
             icon={this.state.isMaximized ? faWindowRestore : faWindowMaximize}
             onClick={TitleBar._onMaximize}
           />
         ) : null}
-        {this._hasButtonFlag(WindowButtonFlag.Close) ? (
+        {this._hasFrameFlag(FrameFlag.Close) ? (
           <WindowButton icon={faTimes} onClick={TitleBar._onClose} />
         ) : null}
       </Box>
@@ -132,11 +119,11 @@ class TitleBar extends React.PureComponent<TitleBarOptions, TitleBarState> {
     ipcRenderer.send(R2M.WINDOW_MAXIMIZE);
   }
 
-  private _hasButtonFlag(flag: WindowButtonFlag): boolean {
-    if (!this.state || !this.state.options || !this.state.options.buttonFlags) {
+  private _hasFrameFlag(flag: FrameFlag): boolean {
+    if (!this.state || !this.state.options || !this.state.options.frameFlags) {
       return false;
     }
-    return (this.state.options.buttonFlags & flag) === flag;
+    return (this.state.options.frameFlags & flag) === flag;
   }
 }
 

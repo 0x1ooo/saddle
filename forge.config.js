@@ -29,16 +29,10 @@ module.exports = {
         renderer: {
           config: "./webpack.renderer.config.js",
           entryPoints: [{
-              html: "./assets/index.html",
-              js: "./src/renderer/renderer-main.tsx",
-              name: "main_window"
-            },
-            {
-              html: "./assets/index.html",
-              js: "./src/renderer/renderer-tool.tsx",
-              name: "about_window"
-            }
-          ]
+            html: "./assets/index.html",
+            js: "./src/renderer/renderer.tsx",
+            name: "main_window"
+          }]
         },
         port: 9876,
         loggerPort: 9877

@@ -29,18 +29,22 @@ import { ThemeProvider } from '@material-ui/core';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
-import ToolFrame from 'renderer/components/frame/ToolFrame';
+import Frame from 'renderer/components/frame/Frame';
 import log from 'renderer/log';
 import hotSteel from 'renderer/theme/hot-steel';
 import './index.scss';
 
 log.initialize();
-log.ui().info('This is a tool window!');
+log
+  .ui()
+  .info(
+    '👋 This message is being logged by "renderer.js", included via webpack'
+  );
 
 ReactDOM.render(
   <ThemeProvider theme={hotSteel}>
     <AppContainer>
-      <ToolFrame />
+      <Frame />
     </AppContainer>
   </ThemeProvider>,
   document.getElementById('root')

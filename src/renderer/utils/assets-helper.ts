@@ -1,17 +1,24 @@
 import isDev from 'electron-is-dev';
 import path from 'path';
 
-export function asset(filename: string): string {
-  if (!filename) {
-    return filename;
+/** Used for converting an absolute asset path to
+ * a runtime path.
+ *
+ * @param absolutePath The absolute asset path, e.g. `/img/logo.svg`
+ * @returns The actual path to the requesting asset depending on runtime environment.
+ * @throws When `absolutePath` is not absolute.
+ */
+export function asset(absolutePath: string): string {
+  if (!absolutePath) {
+    return absolutePath;
   }
 
-  if (!path.isAbsolute(filename)) {
+  if (!path.isAbsolute(absolutePath)) {
     throw new Error(`asset filename must be absolute to root path, for example:
   "/img/logo.svg"
     `);
   }
   return isDev
-    ? filename
-    : path.resolve(__dirname, '..', path.relative('/', filename));
+    ? absolutePath
+    : path.resolve(__dirname, '..', path.relative('/', absolutePath));
 }

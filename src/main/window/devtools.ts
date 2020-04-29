@@ -1,6 +1,7 @@
 import { BrowserWindow, screen } from 'electron';
 
-/** Open the DevTools window by parent window's side
+/** Open the DevTools window to parent window's side,
+ * and will try to place both windows in the center of the screen.
  * @param wnd Parent window that the DevTools attached to
  */
 export function openDevTools(wnd: BrowserWindow) {
@@ -10,9 +11,6 @@ export function openDevTools(wnd: BrowserWindow) {
   const disp = screen.getPrimaryDisplay();
   const screenSize = disp.workAreaSize;
   const wndSize = wnd.getBounds();
-  console.log('screen size', screenSize);
-  console.log('wnd size', wnd.getBounds());
-  console.log('dev wnd size', devWnd.getBounds());
   const minDevWidth = 300;
   const devSize = devWnd.getBounds();
   devSize.width = Math.max(

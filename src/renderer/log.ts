@@ -26,7 +26,7 @@ function initialize() {
     categories: {
       ui: {
         appenders,
-        level: 'INFO',
+        level: isDev ? 'ALL' : 'INFO',
       },
     },
   });
