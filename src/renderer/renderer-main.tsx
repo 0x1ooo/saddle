@@ -28,8 +28,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
+import MainFrame from 'renderer/components/frame/MainFrame';
 import log from 'renderer/log';
-import App from './components/App';
 import './index.scss';
 
 log.initialize();
@@ -41,7 +41,7 @@ log
 
 ReactDOM.render(
   <AppContainer>
-    <App />
+    <MainFrame />
   </AppContainer>,
   document.getElementById('root')
 );

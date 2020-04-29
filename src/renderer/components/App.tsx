@@ -50,3 +50,4 @@ ipcRenderer.on(M2R.PROXY_DISABLED, () => log.ui().info('[trojan] stopped'));
 ipcRenderer.on(M2R.PROXY_ERROR, (_, err) => log.ui().error('[trojan]', err));
 
 export default hot(module)(App) as () => JSX.Element;
+// export default App;

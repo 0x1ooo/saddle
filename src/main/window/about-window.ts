@@ -21,7 +21,7 @@ export async function createAboutWindow(
   });
   wnd.removeMenu();
   // and load the index.html of the app.
-  wnd.loadURL(ABOUT_WINDOW_WEBPACK_ENTRY);
+  wnd.loadURL(`${ABOUT_WINDOW_WEBPACK_ENTRY}/#about`);
 
   // Open the DevTools.
   // if (isDev) {
