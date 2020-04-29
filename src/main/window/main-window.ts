@@ -1,4 +1,6 @@
 import { BrowserWindow } from 'electron';
+import isDev from 'electron-is-dev';
+import { openDevTools } from 'main/window/devtools';
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
@@ -19,8 +21,8 @@ export async function createMainWindow(): Promise<BrowserWindow> {
   wnd.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   // Open the DevTools.
-  // if (isDev) {
-  wnd.webContents.openDevTools();
-  // }
+  if (isDev) {
+    openDevTools(wnd);
+  }
   return wnd;
 }
