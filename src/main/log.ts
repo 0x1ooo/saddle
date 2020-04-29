@@ -1,5 +1,6 @@
 import { makeLoggerOptions } from '@common/log';
 import { ensureDirSync } from '@common/utils/fs';
+import isDev from 'electron-is-dev';
 import { configure, getLogger, shutdown } from 'log4js';
 import path from 'path';
 
@@ -12,7 +13,7 @@ function initialize() {
     categories: {
       main: {
         appenders: ['file', 'stdout'],
-        level: 'INFO',
+        level: isDev ? 'ALL' : 'INFO',
       },
       trojan: {
         appenders: ['file', 'stdout'],

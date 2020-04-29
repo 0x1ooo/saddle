@@ -59,6 +59,7 @@
     "@types/react-hot-loader": "^4.1.1",
     "@types/react-router-dom": "^5.1.5",
     "@types/react-test-renderer": "^16.9.2",
+    "@types/styled-components": "^5.1.0",
     "@typescript-eslint/eslint-plugin": "2.29.0",
     "@typescript-eslint/parser": "2.29.0",
     "babel-core": "7.0.0-bridge.0",
@@ -103,6 +104,10 @@
     "webpack": "^4.43.0"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.28",
+    "@fortawesome/free-solid-svg-icons": "^5.13.0",
+    "@fortawesome/react-fontawesome": "^0.1.9",
+    "@material-ui/core": "^4.9.12",
     "electron-is-dev": "^1.2.0",
     "electron-squirrel-startup": "^1.0.0",
     "lodash": "^4.17.15",
@@ -110,6 +115,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-hot-loader": "^4.12.20",
-    "react-router-dom": "^5.1.2"
+    "react-router-dom": "^5.1.2",
+    "styled-components": "^5.1.0"
   }
 }

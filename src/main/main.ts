@@ -21,6 +21,7 @@ async function startup() {
   }
   initTray();
   await proxyService.initialize();
+  await windowManager.initialize();
   log.main().warn('saddle launched.');
 }
 

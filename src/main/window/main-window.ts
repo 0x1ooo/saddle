@@ -8,6 +8,7 @@ export async function createMainWindow(): Promise<BrowserWindow> {
   const wnd = new BrowserWindow({
     width: 1080,
     height: 900,
+    frame: false,
     webPreferences: {
       nodeIntegration: true,
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
