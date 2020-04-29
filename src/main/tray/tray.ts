@@ -1,5 +1,6 @@
 import { Menu, Tray } from 'electron';
 import { getRootMenuItems } from 'main/tray/menu';
+import windowManager from 'main/windows';
 import os from 'os';
 import path from 'path';
 
@@ -8,6 +9,9 @@ let tray: Tray | null = null;
 export function initTray() {
   tray = new Tray(getIconPath());
   tray.setContextMenu(Menu.buildFromTemplate(getRootMenuItems()));
+  tray.on('click', () => {
+    windowManager.open('main');
+  });
 }
 
 function getIconPath(status = 0) {
