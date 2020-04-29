@@ -19,11 +19,13 @@
     ],
     "resolveJsonModule": true,
     "paths": {
-      "assets/*": ["./assets/*"],
+      "@common/*": ["src/@common/*"],
+      "main/*": ["src/main/*"],
+      "renderer/*": ["src/renderer/*"],
       "*": ["node_modules/*"]
     }
   },
   "include": [
     "src/**/*"
-  ]
+  ],
 }

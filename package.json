@@ -13,7 +13,8 @@
     "format": "prettier --write",
     "test.patch": "node scripts/fix-jest-electron-bug.js",
     "test.main": "yarn test.patch && yarn jest src/main --notify --config=jest.main.config.js --detectOpenHandles --passWithNoTests",
-    "test.renderer": "yarn test.patch && yarn jest src/renderer --notify --config=jest.renderer.config.js --detectOpenHandles --passWithNoTests"
+    "test.renderer": "yarn test.patch && yarn jest src/renderer --notify --config=jest.renderer.config.js --detectOpenHandles --passWithNoTests",
+    "test.renderer.u": "yarn test.renderer -u"
   },
   "keywords": [],
   "author": {
@@ -32,7 +33,7 @@
     ],
     "{src,test,mocks}/**/*.{js,ts,tsx}": [
       "prettier --write",
-      "eslint --ext .ts,.tsx,.js,.jsx --fix src"
+      "eslint --ext .ts,.tsx,.js,.jsx --fix --color src"
     ]
   },
   "config": {
@@ -84,6 +85,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/preset-env": "^7.9.5",
     "@babel/preset-react": "^7.9.4",
     "@electron-forge/cli": "6.0.0-beta.50",
@@ -98,12 +100,14 @@
     "@testing-library/react": "^10.0.3",
     "@types/electron-devtools-installer": "^2.2.0",
     "@types/jest": "^25.2.1",
+    "@types/lodash": "^4.14.150",
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.6",
     "@types/react-hot-loader": "^4.1.1",
     "@types/react-test-renderer": "^16.9.2",
     "@typescript-eslint/eslint-plugin": "2.29.0",
     "@typescript-eslint/parser": "2.29.0",
+    "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.1.0",
     "babel-jest": "^25.4.0",
     "babel-loader": "^8.1.0",
@@ -136,6 +140,7 @@
     "prettier-eslint-cli": "5.0.0",
     "react-scripts": "^3.4.1",
     "react-test-renderer": "^16.13.1",
+    "regenerator-runtime": "^0.13.5",
     "sass-loader": "^8.0.2",
     "style-loader": "^1.2.0",
     "ts-loader": "^6.2.1",
@@ -145,6 +150,8 @@
   "dependencies": {
     "electron-is-dev": "^1.2.0",
     "electron-squirrel-startup": "^1.0.0",
+    "lodash": "^4.17.15",
+    "log4js": "^6.2.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-hot-loader": "^4.12.20",

@@ -11,6 +11,6 @@ test('app page matches previous snapshot', () => {
 
 test('app page have an nice title', () => {
   const { getByText } = render(<App />);
-  const titleEl = getByText('Ready to go! 🍻️');
+  const titleEl = getByText('Learn React');
   expect(titleEl).toBeTruthy();
 });

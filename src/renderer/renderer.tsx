@@ -28,10 +28,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
+import log from 'renderer/log';
 import App from './components/App';
 import './index.scss';
 
-console.log('👋 This message is being logged by "renderer.js", included via webpack');
+log.initialize();
+log
+  .ui()
+  .info(
+    '👋 This message is being logged by "renderer.js", included via webpack'
+  );
 
 ReactDOM.render(
   <AppContainer>

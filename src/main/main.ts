@@ -1,5 +1,8 @@
 import { app, BrowserWindow } from 'electron';
 import isDev from 'electron-is-dev';
+import log from 'main/log';
+import { proxyService } from 'main/proxy';
+import { initTray } from 'main/tray';
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
@@ -9,6 +12,8 @@ declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
+
+log.initialize();
 
 async function createWindow(): Promise<void> {
   if (isDev) {
@@ -35,7 +40,26 @@ async function createWindow(): Promise<void> {
   mainWindow.webContents.openDevTools();
   // }
 
-  console.log('saddle launched');
+  initTray();
+  await proxyService.initialize();
+
+  log.main().warn('saddle launched.');
+}
+
+/** Cleanup things in async fashion before the process exists. */
+async function cleanup(event: Event) {
+  log.main().warn('gracefully stopping saddle...');
+  event.preventDefault();
+
+  // Async cleanup codes here
+  await log.flush();
+
+  log.main().info('things have been cleaned up');
+  log.main().warn('bye.');
+  process.exit();
+}
+async function dispose() {
+  proxyService.dispose();
 }
 
 // This method will be called when Electron has finished
@@ -44,13 +68,7 @@ async function createWindow(): Promise<void> {
 app.on('ready', createWindow);
 
 // Quit when all windows are closed.
-app.on('window-all-closed', () => {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
+app.on('window-all-closed', () => {});
 
 app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the
@@ -60,5 +78,7 @@ app.on('activate', () => {
   }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
+app.on('before-quit', cleanup);
+process.on('exit', dispose);
+process.on('SIGINT', dispose);
+process.on('SIGTERM', dispose);

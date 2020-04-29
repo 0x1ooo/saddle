@@ -1,4 +1,4 @@
-import asset from './asset';
+import { asset } from './assets-helper';
 
 test('asset() returns empty path when given an empty string', () => {
   expect(asset('')).toBe('');
