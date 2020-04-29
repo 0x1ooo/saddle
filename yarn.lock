@@ -4295,6 +4295,14 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
+create-jest-runner@~0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/create-jest-runner/-/create-jest-runner-0.4.1.tgz#eeda15bc0f9dc622ef2de5a7fd9a0f1a2c2eb62d"
+  integrity sha512-JOy675JMZ3b05F3VfAAi6Igme3pVBWu7Rt+gbW9ujAiX/Dua7+G47O7IbfiUU/FZjXhtipu/tz930b++UMGQEA==
+  dependencies:
+    jest-worker "^23.2.0"
+    throat "^4.1.0"
+
 cross-spawn@7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.1.tgz#0ab56286e0f7c24e153d04cc2aa027e43a9a5d14"
@@ -8305,6 +8313,15 @@ jest-resolve@^25.4.0:
     resolve "^1.15.1"
     slash "^3.0.0"
 
+jest-runner-tsc@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/jest-runner-tsc/-/jest-runner-tsc-1.6.0.tgz#aea058703a44787abc3dd50538b15b5d258e3c0e"
+  integrity sha512-pgZPqe5b36D6UzBMAvkcVW88lqOUzv52T8DEUTX+3F74WVYIRBlMOKjje1vA1M1kcbMmKi6V3nezmydf+IJ2UA==
+  dependencies:
+    "@babel/code-frame" "^7.0.0"
+    cosmiconfig "^5.2.1"
+    create-jest-runner "~0.4.1"
+
 jest-runner@^24.0.0, jest-runner@^24.9.0:
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/jest-runner/-/jest-runner-24.9.0.tgz#574fafdbd54455c2b34b4bdf4365a23857fcdf42"
@@ -8553,6 +8570,13 @@ jest-watcher@^25.4.0:
     chalk "^3.0.0"
     jest-util "^25.4.0"
     string-length "^3.1.0"
+
+jest-worker@^23.2.0:
+  version "23.2.0"
+  resolved "https://registry.yarnpkg.com/jest-worker/-/jest-worker-23.2.0.tgz#faf706a8da36fae60eb26957257fa7b5d8ea02b9"
+  integrity sha1-+vcGqNo2+uYOsmlXJX+ntdjqArk=
+  dependencies:
+    merge-stream "^1.0.1"
 
 jest-worker@^24.6.0, jest-worker@^24.9.0:
   version "24.9.0"
@@ -9468,6 +9492,13 @@ merge-descriptors@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/merge-descriptors/-/merge-descriptors-1.0.1.tgz#b00aaa556dd8b44568150ec9d1b953f3f90cbb61"
   integrity sha1-sAqqVW3YtEVoFQ7J0blT8/kMu2E=
+
+merge-stream@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/merge-stream/-/merge-stream-1.0.1.tgz#4041202d508a342ba00174008df0c251b8c135e1"
+  integrity sha1-QEEgLVCKNCugAXQAjfDCUbjBNeE=
+  dependencies:
+    readable-stream "^2.0.1"
 
 merge-stream@^2.0.0:
   version "2.0.0"
