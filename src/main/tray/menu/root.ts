@@ -1,5 +1,5 @@
 import { app, MenuItem } from 'electron';
-import windowManager from 'main/windows';
+import windowManager from 'main/window/';
 
 export function getRootMenuItems(): MenuItem[] {
   return [

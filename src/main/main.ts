@@ -3,7 +3,7 @@ import isDev from 'electron-is-dev';
 import log from 'main/log';
 import { proxyService } from 'main/proxy';
 import { initTray } from 'main/tray';
-import windowManager from 'main/windows';
+import windowManager from 'main/window/';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 /* eslint-disable-next-line global-require */

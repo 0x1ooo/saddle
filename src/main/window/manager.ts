@@ -1,47 +1,23 @@
 import { BrowserWindow } from 'electron';
 import log from 'main/log';
-
-declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
-declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
+import { createAboutWindow } from 'main/window/about-window';
+import { createMainWindow } from 'main/window/main-window';
 
 export type WindowType = 'main' | 'about';
 
 const windowBuilders: { [type in WindowType]: () => Promise<BrowserWindow> } = {
   main: createMainWindow,
   about: async () => {
-    throw new Error('not implemented');
+    const parent = windowManager.get('main');
+    return createAboutWindow(parent);
   },
 };
-
-async function createMainWindow(): Promise<BrowserWindow> {
-  // Create the browser window.
-  const mainWindow = new BrowserWindow({
-    width: 1080,
-    height: 900,
-    webPreferences: {
-      nodeIntegration: true,
-      preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
-    },
-  });
-
-  // and load the index.html of the app.
-  mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
-
-  // Open the DevTools.
-  // if (isDev) {
-  mainWindow.webContents.openDevTools();
-  // }
-  return mainWindow;
-}
 
 class WindowManager {
   private readonly _openWindows = new Map<WindowType, BrowserWindow>();
 
   async open(type: WindowType) {
-    let wnd: BrowserWindow | undefined;
-    if (this._openWindows.has(type)) {
-      wnd = this._openWindows.get(type);
-    }
+    let wnd = this.get(type);
     if (!wnd) {
       const builder = windowBuilders[type];
       try {
@@ -60,6 +36,10 @@ class WindowManager {
       }
       wnd.focus();
     }
+  }
+
+  get(type: WindowType) {
+    return this._openWindows.get(type);
   }
 
   private _onWindowClosed(wnd: BrowserWindow) {

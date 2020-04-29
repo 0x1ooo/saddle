@@ -1,6 +1,6 @@
 import { Menu, Tray } from 'electron';
 import { getRootMenuItems } from 'main/tray/menu';
-import windowManager from 'main/windows';
+import windowManager from 'main/window/';
 import os from 'os';
 import path from 'path';
 
