@@ -12,11 +12,6 @@ export interface ServerMeta {
   readonly selected: boolean;
 }
 
-export interface ServerDetail {
-  readonly host: string;
-  readonly port: number;
-}
-
 export interface ServerData {
   meta: ServerMeta;
   conf: object;
@@ -25,7 +20,7 @@ export function isServerData(obj: any): obj is ServerData {
   return obj != null && typeof obj === 'object' && !!obj.meta && !!obj.conf;
 }
 
-export abstract class ServerBase {
+export abstract class ServerEntry {
   constructor(readonly meta: ServerMeta) {}
 
   /** Get more detailed information other than meta.

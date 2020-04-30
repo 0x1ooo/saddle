@@ -1,22 +1,34 @@
 import {
   isServerData,
-  ServerBase,
+  ServerEntry,
   ServerMeta,
   ServerType,
 } from '@data/app/server/base';
 
-export interface IServerBuilder<T extends ServerBase = any> {
+/** This interface defines the constructor's shape of any class that
+ * derived from `ServerEntry`.
+ */
+export interface IServerBuilder<T extends ServerEntry = any> {
   new (meta: ServerMeta, conf: any): T;
 }
 
-class ServerManager {
+export class ServerManager {
   private _builders = new Map<ServerType, IServerBuilder>();
 
+  private _servers: ServerEntry[] = [];
+
+  /** Classes that inherits `ServerEntry` must call this method
+   * to bind itself with a specific `ServerType`, so to make it
+   * recognizable to the server manager to be built from raw data.
+   */
   registerBuilder(type: ServerType, builder: IServerBuilder) {
     this._builders.set(type, builder);
   }
 
-  build<T extends ServerBase>(raw: string): T {
+  // async load(filepath: string) {}
+
+  /** Parses and builds a server entry from marshalled raw data */
+  build<T extends ServerEntry>(raw: string): T {
     try {
       const obj = JSON.parse(raw);
       if (!isServerData(obj)) {
@@ -36,6 +48,17 @@ class ServerManager {
       throw new Error(`invalid server data: ${e}`);
     }
   }
+
+  list(): ServerEntry[] {
+    return this._servers;
+  }
 }
 
-export const serverManager = new ServerManager();
+/** Server manager reads and writes server entries from a config file,
+ * and keeps the config file updated on data changes.
+ *
+ * It's also responsible to detect the changes that may change
+ * the active proxy settings.
+ */
+export const servers = new ServerManager();
+global.servers = servers;

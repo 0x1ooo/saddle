@@ -1,8 +1,9 @@
-import { ServerBase, ServerDetail, ServerMeta } from '@data/app/server/base';
+import { ServerEntry, ServerMeta, ServerType } from '@data/app/server/base';
+import { servers } from '@data/app/server/manager';
 import { SystemConfig } from '@data/app/system';
 import { TrojanConf, TrojanServerConf } from '@data/trojan';
 
-export class TrojanServer extends ServerBase {
+export class TrojanServer extends ServerEntry {
   constructor(meta: ServerMeta, readonly conf: TrojanServerConf) {
     super(meta);
   }
@@ -21,3 +22,5 @@ export class TrojanServer extends ServerBase {
     } as TrojanConf;
   }
 }
+
+servers.registerBuilder(ServerType.Trojan, TrojanServer);

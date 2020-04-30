@@ -24,9 +24,12 @@
       "main/*": ["src/main/*"],
       "renderer/*": ["src/renderer/*"],
       "*": ["node_modules/*"]
-    }
+    },
   },
   "include": [
     "src/**/*"
+  ],
+  "files": [
+    "src/@types/globals.d.ts",
   ],
 }
