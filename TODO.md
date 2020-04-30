@@ -1,7 +1,7 @@
 # TODOs
 
-- get ver by API
+- About window
 - App config
+- Trojan config generation
 - i18n support
-- setAboutPanelOptions
-- notification
+- Notification on proxy status changes

@@ -1,6 +1,7 @@
 import { R2M } from '@common/ipc-protocol';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import {
+  faQuestionCircle,
   faTimes,
   faWindowMaximize,
   faWindowMinimize,
@@ -81,21 +82,24 @@ class TitleBar extends React.PureComponent<TitleBarOptions, TitleBarState> {
           </Box>
         ) : null}
         <Box flex="1 1 auto" />
-        {this._hasFrameFlag(FrameFlag.Minimize) ? (
-          <WindowButton
-            icon={faWindowMinimize}
-            onClick={TitleBar._onMinimize}
-          />
-        ) : null}
-        {this._hasFrameFlag(FrameFlag.Maximize) ? (
-          <WindowButton
-            icon={this.state.isMaximized ? faWindowRestore : faWindowMaximize}
-            onClick={TitleBar._onMaximize}
-          />
-        ) : null}
-        {this._hasFrameFlag(FrameFlag.Close) ? (
-          <WindowButton icon={faTimes} onClick={TitleBar._onClose} />
-        ) : null}
+        <WindowButton icon={faQuestionCircle} onClick={TitleBar._onAbout} />
+        <Box display="flex" alignItems="stretch">
+          {this._hasFrameFlag(FrameFlag.Minimize) ? (
+            <WindowButton
+              icon={faWindowMinimize}
+              onClick={TitleBar._onMinimize}
+            />
+          ) : null}
+          {this._hasFrameFlag(FrameFlag.Maximize) ? (
+            <WindowButton
+              icon={this.state.isMaximized ? faWindowRestore : faWindowMaximize}
+              onClick={TitleBar._onMaximize}
+            />
+          ) : null}
+          {this._hasFrameFlag(FrameFlag.Close) ? (
+            <WindowButton icon={faTimes} onClick={TitleBar._onClose} />
+          ) : null}
+        </Box>
       </Box>
     );
   }
@@ -103,8 +107,14 @@ class TitleBar extends React.PureComponent<TitleBarOptions, TitleBarState> {
   private _updateSizeState() {
     this.setState((prev) => ({
       ...prev,
-      isMaximized: remote.getCurrentWindow().isMaximized(),
+      isMaximized:
+        remote.getCurrentWindow().isMaximized() ||
+        remote.getCurrentWindow().isFullScreen(),
     }));
+  }
+
+  private static _onAbout() {
+    ipcRenderer.send(R2M.WINDOW_OPEN, 'about');
   }
 
   private static _onClose() {

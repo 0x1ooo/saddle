@@ -1,9 +1,10 @@
-import { R2M } from '@common/ipc-protocol';
+import { R2M, WindowKey } from '@common/ipc-protocol';
 import {
   BrowserWindow,
   BrowserWindowConstructorOptions,
   ipcMain,
   IpcMainEvent,
+  WebContents,
 } from 'electron';
 import isDev from 'electron-is-dev';
 import defaults from 'lodash/defaults';
@@ -13,8 +14,6 @@ import { FrameFlag } from 'renderer/components/frame/define';
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
-
-type WindowKey = 'main' | 'about';
 
 interface WindowConfig extends Electron.BrowserWindowConstructorOptions {
   /** The route path that navigates to on window open. */
@@ -29,6 +28,7 @@ interface WindowConfig extends Electron.BrowserWindowConstructorOptions {
   attachTo?: WindowKey;
   /** When set to `true`, this window is created as modal if it has a parent. */
   modalWhenPossible?: boolean;
+  showWhenReady?: boolean;
 }
 
 /** Configurations for each WindowKey */
@@ -43,8 +43,12 @@ const windowConfigs: { [type in WindowKey]: WindowConfig } = {
     titleBarStyle: 'hidden',
     type: 'toolbar',
     resizable: false,
+    fullscreenable: false,
+    maximizable: false,
+    minimizable: false,
     attachTo: 'main',
     modalWhenPossible: true,
+    showWhenReady: true,
   },
 };
 
@@ -60,9 +64,10 @@ class WindowManager {
   private readonly _openWindows = new Map<WindowKey, BrowserWindow>();
 
   initialize() {
-    ipcMain.on(R2M.WINDOW_CLOSE, WindowManager._onCloseWindow.bind(this));
-    ipcMain.on(R2M.WINDOW_MINIMIZE, WindowManager._onMinimizeWindow.bind(this));
-    ipcMain.on(R2M.WINDOW_MAXIMIZE, WindowManager._onMaximizeWindow.bind(this));
+    ipcMain.on(R2M.WINDOW_CLOSE, WindowManager._onCloseWindow);
+    ipcMain.on(R2M.WINDOW_MINIMIZE, WindowManager._onMinimizeWindow);
+    ipcMain.on(R2M.WINDOW_MAXIMIZE, WindowManager._onMaximizeWindow);
+    ipcMain.on(R2M.WINDOW_OPEN, this._onOpenWindow.bind(this));
     log.main().trace('window manager initialized');
   }
 
@@ -107,12 +112,14 @@ class WindowManager {
       // Forced Options > WindowConfig > Built-in BrowserWindow options
       const parent = config.attachTo ? this.get(config.attachTo) : undefined;
       const modal = config.modalWhenPossible ? !!parent : undefined;
+      const show = !config.showWhenReady;
       options = defaults(
         {},
         options,
         {
           parent,
           modal,
+          show,
         },
         config
       );
@@ -140,6 +147,9 @@ class WindowManager {
     if (isDev) {
       openDevTools(wnd);
     }
+    if (config.showWhenReady) {
+      wnd.on('ready-to-show', () => wnd.show());
+    }
     return wnd;
   }
 
@@ -151,8 +161,27 @@ class WindowManager {
     });
   }
 
-  private static _onCloseWindow(event: IpcMainEvent) {
-    const wnd = BrowserWindow.fromWebContents(event.sender);
+  private _onOpenWindow(event: IpcMainEvent, key?: WindowKey) {
+    if (!key) {
+      throw new Error('window key must be given on open window command');
+    }
+    this.open(key);
+  }
+
+  private static _onCloseWindow(
+    event: IpcMainEvent,
+    target?: BrowserWindow | WebContents
+  ) {
+    let wnd: BrowserWindow | null;
+    if (target) {
+      if (target instanceof WebContents) {
+        wnd = BrowserWindow.fromWebContents(event.sender);
+      } else {
+        wnd = target;
+      }
+    } else {
+      wnd = BrowserWindow.fromWebContents(event.sender);
+    }
     if (wnd) {
       wnd.close();
     }
@@ -168,7 +197,11 @@ class WindowManager {
   private static _onMaximizeWindow(event: IpcMainEvent) {
     const wnd = BrowserWindow.fromWebContents(event.sender);
     if (wnd) {
-      wnd.isMaximized() ? wnd.restore() : wnd.maximize();
+      if (wnd.isFullScreen()) {
+        wnd.setFullScreen(false);
+      } else {
+        wnd.isMaximized() ? wnd.restore() : wnd.maximize();
+      }
     }
   }
 }
