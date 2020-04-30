@@ -70,7 +70,7 @@ class TitleBar extends React.PureComponent<TitleBarOptions, TitleBarState> {
 
   render() {
     return (
-      <Box display="flex" alignItems="stretch" paddingX={1}>
+      <Box display="flex" alignItems="stretch">
         {this._hasFrameFlag(FrameFlag.Icon) ? (
           <Box marginRight={0.5} display="flex">
             <img src={asset('/img/logo.svg')} width={32} alt="App Logo" />

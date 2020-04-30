@@ -48,16 +48,18 @@ function Frame() {
         color: theme.palette.primary.light,
       }}
     >
-      <TitleBar {...query} />
-      <Box>
-        <MemoryRouter initialEntries={[query.path]}>
-          <Switch>
-            {...rootRoutes.map((route) => (
-              <PageRoute key={route.path} path={route.path} {...route} />
-            ))}
-          </Switch>
-        </MemoryRouter>
-      </Box>
+      <div className="window-body">
+        <TitleBar {...query} />
+        <Box>
+          <MemoryRouter initialEntries={[query.path]}>
+            <Switch>
+              {...rootRoutes.map((route) => (
+                <PageRoute key={route.path} path={route.path} {...route} />
+              ))}
+            </Switch>
+          </MemoryRouter>
+        </Box>
+      </div>
     </div>
   );
 }

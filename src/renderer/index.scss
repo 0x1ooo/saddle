@@ -15,11 +15,17 @@ code {
 }
 
 .window-frame {
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.window-body {
   padding: 0 !important;
   margin: 0 !important;
-  width: 100vw;
-  height: 100vh;
+  width: calc(100vw - 10px);
+  height: calc(100vh - 10px);
   -webkit-app-region: drag;
+  box-sizing: border-box;
 }
 .window-interact {
   -webkit-app-region: no-drag;
