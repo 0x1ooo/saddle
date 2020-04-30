@@ -1,5 +1,5 @@
 import { LogLevel } from '@common/log';
-import { getTrojanLogLevel, TrojanLogLevel } from '@data/trojan/define';
+import { getTrojanLogLevel, TrojanLogLevel } from '@model/trojan/define';
 
 const levelMap = {
   [LogLevel.All]: TrojanLogLevel.All,

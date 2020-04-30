@@ -1,1 +1,0 @@
-export { trojan } from './process';

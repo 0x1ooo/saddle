@@ -1,6 +1,6 @@
-import { ProxyType, ServerData } from '@data/app/server/base';
-import { ServerManager } from '@data/app/server/manager';
-import { TrojanServer } from '@data/app/server/trojan';
+import { ProxyType, ServerConfig } from '@model/app/server';
+import { ServerHub } from 'main/datahub/server/server-hub';
+import { TrojanServer } from 'main/datahub/server/trojan';
 
 const goodTrojanData = {
   meta: {
@@ -16,36 +16,34 @@ const goodTrojanData = {
     remote_addr: 'www.xxx.com',
     remote_port: 4321,
   },
-} as ServerData;
-const badServerData = {
+} as ServerConfig;
+const badServerConf = {
   meta: {
     type: ProxyType.Unknown,
   },
-} as ServerData;
-const freakServerData = {
+} as ServerConfig;
+const freakingServerConf = {
   foo: 'bar',
 };
 
-let mgr: ServerManager;
+let mgr: ServerHub;
 beforeEach(() => {
-  mgr = new ServerManager();
+  mgr = new ServerHub();
   mgr.registerBuilder(ProxyType.Trojan, TrojanServer);
 });
 
 it('builds a trojan server entry from raw data', () => {
-  const testData = JSON.stringify(goodTrojanData);
-  const server = mgr.build(testData);
+  const server = mgr.build(goodTrojanData);
+  expect(server).toBeTruthy();
   expect(server instanceof TrojanServer).toBeTruthy();
-  expect(server.meta).toEqual(goodTrojanData.meta);
+  expect(server!.meta).toEqual(goodTrojanData.meta);
   expect((server as TrojanServer).conf).toEqual(goodTrojanData.conf);
 });
 
 it('throws an error when building a server of unknown type', () => {
-  const testData = JSON.stringify(badServerData);
-  expect(() => mgr.build(testData)).toThrow();
+  expect(mgr.build(badServerConf)).toBeNull();
 });
 
 it('throws an error when building a server with unknown data structure', () => {
-  const testData = JSON.stringify(freakServerData);
-  expect(() => mgr.build(testData)).toThrow();
+  expect(mgr.build(freakingServerConf as any)).toBeNull();
 });

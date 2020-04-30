@@ -25,7 +25,7 @@ function parseQuery(): FrameQueryData {
     return { title: remote.app.name, path: '/' };
   }
   const query = new URLSearchParams(href.substr(qMark + 1));
-  const frameFlags = parseInt(query.get('flag') || '', 10);
+  const frameFlags = +(query.get('flag') || '');
   return {
     title: query.get('title') || remote.app.name,
     path: query.get('path') || '/',

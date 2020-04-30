@@ -3,8 +3,8 @@ import { ensureDirSync } from '@common/utils/fs';
 import { ipcMain, IpcMainEvent } from 'electron';
 import log from 'main/log';
 import { Disable, Global, IProxySetting, PAC } from 'main/proxy/setting';
+import { trojan } from 'main/proxy/trojan';
 import { applyWin32, applyWin32Sync } from 'main/proxy/win';
-import { trojan } from 'main/trojan';
 import os from 'os';
 import path from 'path';
 

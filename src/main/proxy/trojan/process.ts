@@ -2,16 +2,22 @@ import { M2R, ProxyCode, ProxyError } from '@common/ipc-protocol';
 import { fsExist } from '@common/utils/fs';
 import { waitUntil } from '@common/utils/promise';
 import { ChildProcess, spawn } from 'child_process';
-import { IpcMainEvent } from 'electron';
+import { app, IpcMainEvent } from 'electron';
+import isDev from 'electron-is-dev';
 import log from 'main/log';
 import os from 'os';
 import path from 'path';
 
-const TROJAN_BASE_PATH = path.join(__dirname, 'trojan');
-const TROJAN_EXECS: { [platform: string]: string } = {
+const trojanBasePath = path.join(__dirname, 'trojan');
+const trojanExecs: { [platform: string]: string } = {
   win32: 'trojan-go.exe',
 };
-const TROJAN_CONFIG_PATH = 'client.json';
+const trojanConfigFilename = 'client.json';
+
+/** The config file's path that Trojan reads to launch its client service */
+export const trojanConfigPath = isDev
+  ? path.join(__dirname, trojanConfigFilename)
+  : path.join(app.getPath('userData'), trojanConfigFilename);
 
 interface TrojanArgs {
   entry: string;
@@ -23,18 +29,27 @@ class TrojanService {
 
   private _proc: ChildProcess | null = null;
 
+  /** Attaches an `IpcMainEvent` instance to the service, so to
+   * broadcast the service's status later.
+   */
   attachUIEvent(event: IpcMainEvent) {
     this._uiEvent = event;
   }
 
+  /** Detaches an `IpcMainEvent` to stop broadcasting the service's status. */
   detachUIEvent() {
     this._uiEvent = null;
   }
 
+  /** Checks if the underlying Trojan client is still running. */
   get alive() {
     return this._proc && !this._proc.killed;
   }
 
+  /** Starts the underlying Trojan client and establishes
+   * the port listener, stdio pipes, etc. Also notify the
+   * attached UI if any.
+   */
   async start() {
     this._notify(M2R.PROXY_BUSY);
     await this._stop();
@@ -68,12 +83,16 @@ class TrojanService {
     }, 500);
   }
 
+  /** Stops listening to any incoming traffics, and notify the attached UI. */
   async stop() {
     this._notify(M2R.PROXY_BUSY);
     await this._stop();
     this._notify(M2R.PROXY_DISABLED);
   }
 
+  /** Shuts down the service completely
+   * and clean up any occupied resources.
+   */
   async shutdown() {
     this.detachUIEvent();
     await this._stop();
@@ -90,17 +109,25 @@ class TrojanService {
     await waitUntil(() => !this._proc, 100, 10000);
   }
 
-  /** Notify a Trojan status to the UI process if any
+  /** Notify a Trojan status to the UI process if exists.
+   * Automatically detaches any obsoleted UI event.
    * @param m2r An IPC Message of M2R.*
    * @param args Additional data to be intepreted by the renderer process listener
    */
   private _notify(m2r: string, ...args: any[]) {
-    if (this._uiEvent) {
+    if (
+      this._uiEvent &&
+      this._uiEvent.sender &&
+      !this._uiEvent.sender.isDestroyed
+    ) {
       this._uiEvent.reply(m2r, ...args);
+    } else {
+      this.detachUIEvent();
     }
   }
 
-  // // Trojan process event handlers ////
+  // / ------------ Trojan process event handlers ------------ ///
+
   private static _onStdOut(data: Buffer) {
     data
       .toString()
@@ -145,15 +172,18 @@ class TrojanService {
   }
 }
 
-export const trojan = new TrojanService();
-
 function getTrojanPath(): TrojanArgs {
-  const filename = TROJAN_EXECS[os.platform()];
+  const filename = trojanExecs[os.platform()];
   if (!filename) {
     throw new Error(`Saddle doesn't support this system currently.`);
   }
   return {
-    entry: path.join(TROJAN_BASE_PATH, filename),
-    config: path.join(TROJAN_BASE_PATH, TROJAN_CONFIG_PATH),
+    entry: path.join(trojanBasePath, filename),
+    config: trojanConfigPath,
   };
 }
+
+/** The singleton of `TrojanService` that interacts with
+ * the underlying Trojan-go client.
+ */
+export const trojan = new TrojanService();

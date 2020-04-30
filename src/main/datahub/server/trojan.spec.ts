@@ -1,7 +1,7 @@
-import { TrojanServer } from '@data/app/server/trojan';
-import { defaultSystemConfig, SystemConfig } from '@data/app/system';
-import { TrojanLogLevel } from '@data/trojan';
-import { assign } from 'lodash';
+import { defaultSystemConfig, SystemConfig } from '@model/app/system';
+import { TrojanLogLevel } from '@model/trojan';
+import assign from 'lodash/assign';
+import { TrojanServer } from 'main/datahub/server/trojan';
 
 // const testMeta = {
 //   id: '111',
@@ -20,8 +20,8 @@ beforeEach(() => {
     logFilename: 'abc.log',
   } as SystemConfig);
 });
-it('converts sysconf to Trojan format', () => {
-  let conf = TrojanServer.convertSysConf(testSystem);
+it('apply system config to Trojan format', () => {
+  let conf = TrojanServer.applySysConf(testSystem);
   expect(conf).toBeTruthy();
   expect(conf).toEqual({
     run_type: 'client',
@@ -34,6 +34,6 @@ it('converts sysconf to Trojan format', () => {
 
   // Test allow LAN
   testSystem.allowLAN = true;
-  conf = TrojanServer.convertSysConf(testSystem);
+  conf = TrojanServer.applySysConf(testSystem);
   expect(conf?.local_addr).toEqual('0.0.0.0');
 });
