@@ -4,6 +4,8 @@ Saddle 是一个使用 Electron 开发的桌面 Trojan 客户端。
 
 [![0x1ooo](https://circleci.com/gh/0x1ooo/saddle.svg?style=shield)](https://app.circleci.com/pipelines/github/0x1ooo/saddle)
 [![Powered by TypeScript](https://badgen.net/badge/icon/typescript?icon=typescript&label)](https://www.typescriptlang.org/)
+![Code styled by Prettier](https://badgen.net/badge/code%20style/prettier/f2a)
+![Support Windows](https://badgen.net/badge/icon/windows?icon=windows&label)
 
 **_🚧 WORK IN PROGRESS 🚧 👷 👋_**
 
