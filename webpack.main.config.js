@@ -1,6 +1,7 @@
 const path = require('path');
 const rules = require('./webpack.rules');
 const plugins = require('./webpack.plugins');
+const aliases = require('./webpack.aliases');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 function srcPaths(src) {
@@ -30,11 +31,7 @@ module.exports = {
     }])),
   ],
   resolve: {
-    alias: {
-      '@common': srcPaths('src/@common'),
-      'main': srcPaths('src/main'),
-      'renderer': srcPaths('src/renderer'),
-    },
+    alias: aliases,
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json']
   },
 };

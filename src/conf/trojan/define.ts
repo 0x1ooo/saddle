@@ -1,6 +1,40 @@
 /* ---------------- Trojan-go JSON Types ---------------- */
+
+import { LogLevel } from '@common/log';
+
+/** Trojan log levels */
+export enum TrojanLogLevel {
+  All = 0,
+  Debug = 0,
+  Info,
+  Warning,
+  Error,
+  Fatal,
+  None,
+}
+export function getTrojanLogLevel(level: LogLevel) {
+  switch (level) {
+    case 'ALL':
+      return TrojanLogLevel.All;
+    case 'TRACE':
+    case 'DEBUG':
+      return TrojanLogLevel.Debug;
+    case 'INFO':
+      return TrojanLogLevel.Info;
+    case 'WARN':
+      return TrojanLogLevel.Warning;
+    case 'ERROR':
+      return TrojanLogLevel.Error;
+    case 'FATAL':
+    case 'MARK':
+      return TrojanLogLevel.Fatal;
+    default:
+      return TrojanLogLevel.None;
+  }
+}
+
 /** The complete Trojan-go config structure */
-export interface TrojanConfig {
+export interface TrojanConf {
   run_type: 'client';
   local_addr: string;
   local_port: number;
@@ -8,18 +42,18 @@ export interface TrojanConfig {
   remote_port: number;
   password: string[];
 
-  log_level?: number;
+  log_level?: TrojanLogLevel;
   log_file?: string;
   buffer_size?: number;
 
-  ssl?: TrojanSSLConfig;
-  tcp?: TrojanTCPConfig;
-  mux?: TrojanMuxConfig;
-  router?: TrojanRouterConfig;
-  websocket?: TrojanWebsocketConfig;
+  ssl?: TrojanSSLConf;
+  tcp?: TrojanTCPConf;
+  mux?: TrojanMuxConf;
+  router?: TrojanRouterConf;
+  websocket?: TrojanWebsocketConf;
 }
 /** SSL config of Trojan-go */
-export interface TrojanSSLConfig {
+export interface TrojanSSLConf {
   verify?: boolean;
   verify_hostname?: boolean;
   cert?: string;
@@ -36,7 +70,7 @@ export interface TrojanSSLConfig {
   reuse_session?: boolean;
 }
 /** TCP config of Trojan-go */
-export interface TrojanTCPConfig {
+export interface TrojanTCPConf {
   no_delay?: boolean;
   keep_alive?: boolean;
   reuse_port?: boolean;
@@ -45,13 +79,13 @@ export interface TrojanTCPConfig {
   fast_open_qlen?: number;
 }
 /** Mux config of Trojan-go */
-export interface TrojanMuxConfig {
+export interface TrojanMuxConf {
   enabled?: boolean;
   concurrency?: number;
   idle_timeout?: number;
 }
 /** Router config of Trojan-go */
-export interface TrojanRouterConfig {
+export interface TrojanRouterConf {
   enabled?: boolean;
   bypass?: string[];
   proxy?: string[];
@@ -63,7 +97,7 @@ export interface TrojanRouterConfig {
   geosite?: string;
 }
 /** Websocket config of Trojan-go */
-export interface TrojanWebsocketConfig {
+export interface TrojanWebsocketConf {
   enabled?: boolean;
   hostname?: string;
   path?: string;
@@ -75,32 +109,33 @@ export interface TrojanWebsocketConfig {
 /* ---------------- Derived Types ---------------- */
 
 /** Essential settings for connecting to a Trojan server */
-export type TrojanServerEssential = Pick<
-  TrojanConfig,
+export type TrojanServerEssentialConf = Pick<
+  TrojanConf,
   'remote_addr' | 'remote_port' | 'password' | 'websocket'
 >;
 
 /** Trojan settings to override the system defaults for a specific Trojan server */
-export type TrojanServerOverridable = Pick<
-  TrojanConfig,
+export type TrojanServerOverridableConf = Pick<
+  TrojanConf,
   'ssl' | 'tcp' | 'router' | 'mux'
 >;
 
 /** Settings that can be set for a single Trojan server */
-export type TrojanServer = TrojanServerEssential & TrojanServerOverridable;
+export type TrojanServerConf = TrojanServerEssentialConf &
+  TrojanServerOverridableConf;
 
 /** Default Trojan server settings for further editing */
-export const trojanDefaultServer: TrojanServer = {
+export const trojanDefaultServerConf: TrojanServerConf = {
   remote_addr: '',
   remote_port: 443,
   password: [],
 };
 
 /** Settings that used for the proxy/network/client on local machine */
-export type TrojanSystem = Omit<TrojanConfig, keyof TrojanServer>;
+export type TrojanSystemConf = Omit<TrojanConf, keyof TrojanServerConf>;
 
 /** Default Trojan system settings */
-export const trojanDefaultSystem: TrojanSystem = {
+export const trojanDefaultSystemConf: TrojanSystemConf = {
   run_type: 'client',
   local_addr: '127.0.0.1',
   local_port: 7890,
