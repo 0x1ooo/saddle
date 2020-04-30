@@ -1,16 +1,16 @@
 import { makeLoggerOptions } from '@common/log';
 import { ensureDirSync } from '@common/utils/fs';
+import { remote } from 'electron';
 import isDev from 'electron-is-dev';
 import { configure, getLogger, shutdown } from 'log4js';
-import path from 'path';
 
-const logDir = isDev ? '/' : path.join(__dirname, '../log');
+const logDir = isDev ? '/' : remote.app.getPath('logs');
 const logFilename = 'renderer.log';
 
 function initialize() {
-  ensureDirSync(logDir);
   const appenders = ['stdout', 'console'];
   if (!isDev) {
+    ensureDirSync(logDir);
     appenders.push('file');
   }
   const options = makeLoggerOptions(logDir, logFilename, {
@@ -31,6 +31,9 @@ function initialize() {
     },
   });
   configure(options);
+  if (!isDev) {
+    log.ui().info(`log files are kept at ${logDir}`);
+  }
 }
 async function flush() {
   return new Promise<void>((resolve) => {

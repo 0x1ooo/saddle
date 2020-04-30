@@ -1,6 +1,6 @@
 {
   "name": "saddle",
-  "productName": "saddle",
+  "productName": "Saddle",
   "version": "0.1.0",
   "description": "A Trojan GUI client",
   "main": "./.webpack/main",

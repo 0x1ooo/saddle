@@ -1,4 +1,4 @@
-import { Menu, Tray } from 'electron';
+import { app, Menu, Tray } from 'electron';
 import { getRootMenuItems } from 'main/tray/menu';
 import windowManager from 'main/window/';
 import os from 'os';
@@ -12,6 +12,10 @@ export function initTray() {
   tray.on('click', () => {
     windowManager.open('main');
   });
+  tray.setToolTip(`${app.name} ${app.getVersion()}`);
+}
+export function disposeTray() {
+  tray?.destroy();
 }
 
 function getIconPath(status = 0) {

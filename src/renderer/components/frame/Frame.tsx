@@ -1,5 +1,5 @@
-import { APP_NAME } from '@common/global';
 import { Box, useTheme } from '@material-ui/core';
+import { remote } from 'electron';
 import React from 'react';
 import { hot } from 'react-hot-loader';
 import { MemoryRouter, Switch } from 'react-router-dom';
@@ -22,12 +22,12 @@ function parseQuery(): FrameQueryData {
   const { href } = window.location;
   const qMark = href.indexOf('?');
   if (qMark < 0 || qMark === href.length - 1) {
-    return { title: APP_NAME, path: '/' };
+    return { title: remote.app.name, path: '/' };
   }
   const query = new URLSearchParams(href.substr(qMark + 1));
   const frameFlags = parseInt(query.get('flag') || '', 10);
   return {
-    title: query.get('title') || APP_NAME,
+    title: query.get('title') || remote.app.name,
     path: query.get('path') || '/',
     frameFlags: isNaN(frameFlags) ? undefined : frameFlags,
   };
