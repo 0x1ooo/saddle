@@ -61,6 +61,8 @@
     "react/jsx-one-expression-per-line": "off",
     "react/jsx-wrap-multilines": "off",
     "react/destructuring-assignment": "off",
-    "no-underscore-dangle": "off"
+    "react/sort-comp": "off",
+    "no-underscore-dangle": "off",
+    "no-bitwise": "off"
   }
 }

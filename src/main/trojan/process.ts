@@ -23,11 +23,11 @@ class TrojanService {
 
   private _proc: ChildProcess | null = null;
 
-  attachUI(event: IpcMainEvent) {
+  attachUIEvent(event: IpcMainEvent) {
     this._uiEvent = event;
   }
 
-  detachUI() {
+  detachUIEvent() {
     this._uiEvent = null;
   }
 
@@ -74,9 +74,9 @@ class TrojanService {
     this._notify(M2R.PROXY_DISABLED);
   }
 
-  dispose() {
-    this.detachUI();
-    this._stop();
+  async shutdown() {
+    this.detachUIEvent();
+    await this._stop();
   }
 
   private async _stop() {

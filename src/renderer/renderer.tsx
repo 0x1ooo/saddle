@@ -25,11 +25,13 @@
  *  });
  * ```
  */
+import { ThemeProvider } from '@material-ui/core';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
+import Frame from 'renderer/components/frame/Frame';
 import log from 'renderer/log';
-import App from './components/App';
+import hotSteel from 'renderer/theme/hot-steel';
 import './index.scss';
 
 log.initialize();
@@ -40,8 +42,10 @@ log
   );
 
 ReactDOM.render(
-  <AppContainer>
-    <App />
-  </AppContainer>,
+  <ThemeProvider theme={hotSteel}>
+    <AppContainer>
+      <Frame />
+    </AppContainer>
+  </ThemeProvider>,
   document.getElementById('root')
 );

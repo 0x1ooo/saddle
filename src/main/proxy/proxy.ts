@@ -22,10 +22,10 @@ class ProxyService {
     ipcMain.on(R2M.PROXY_COMMAND, this._cmdListener);
   }
 
-  dispose() {
+  async cleanup() {
     ipcMain.off(R2M.PROXY_COMMAND, this._cmdListener);
-    this.applySync(new Disable());
-    trojan.dispose();
+    this.apply(new Disable());
+    await trojan.shutdown();
   }
 
   async loadSetting(cmd: ProxyUICommand) {
@@ -67,7 +67,7 @@ class ProxyService {
   }
 
   private async _onCommand(event: IpcMainEvent, cmd: ProxyUICommand) {
-    trojan.attachUI(event);
+    trojan.attachUIEvent(event);
     try {
       await this.apply(await this.loadSetting(cmd));
       if (cmd === ProxyUICommand.Disable) {
@@ -78,7 +78,7 @@ class ProxyService {
     } catch (e) {
       await trojan.stop();
       event.reply(M2R.PROXY_ERROR, e);
-      trojan.detachUI();
+      trojan.detachUIEvent();
       log.main().error('failed executing proxy command: ', e);
     }
   }

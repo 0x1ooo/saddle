@@ -12,8 +12,8 @@ export async function waitUntil(
   timeout: number
 ) {
   return new Promise((resolve, reject) => {
-    let refTimer: NodeJS.Timeout;
-    let refTimeout: NodeJS.Timeout;
+    let refTimer: number;
+    let refTimeout: number;
     const dispose = () => {
       clearInterval(refTimer);
       clearTimeout(refTimeout);

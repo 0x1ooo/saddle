@@ -9,11 +9,8 @@ jobs:
           name: Install dependencies
           command: yarn
       - run:
-          name: Test the main process
-          command: yarn test.main
-      - run:
-          name: Test the renderer process
-          command: yarn test.renderer
+          name: Run tests
+          command: yarn test.all
       - run:
           name: Test-build the app package
           command: yarn package

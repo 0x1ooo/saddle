@@ -1,6 +1,6 @@
 {
   "name": "saddle",
-  "productName": "saddle",
+  "productName": "Saddle",
   "version": "0.1.0",
   "description": "A Trojan GUI client",
   "main": "./.webpack/main",
@@ -12,9 +12,9 @@
     "lint": "eslint --ext .ts,.tsx,.js,.jsx src --color",
     "format": "prettier --write",
     "test.patch": "node scripts/fix-jest-electron-bug.js",
-    "test.main": "yarn test.patch && yarn jest src/main --notify --config=jest.main.config.js --detectOpenHandles --passWithNoTests",
-    "test.renderer": "yarn test.patch && yarn jest src/renderer --notify --config=jest.renderer.config.js --detectOpenHandles --passWithNoTests",
-    "test.renderer.u": "yarn test.renderer -u"
+    "test.main": "yarn test.patch && yarn jest \"src/(@common|main)\" --notify --config=jest.main.config.js --detectOpenHandles --passWithNoTests",
+    "test.renderer": "yarn test.patch && yarn jest \"src/(@common|renderer)\" --notify --config=jest.renderer.config.js --detectOpenHandles --passWithNoTests",
+    "test.all": "yarn test.main && yarn test.renderer"
   },
   "keywords": [],
   "author": {
@@ -35,53 +35,6 @@
       "prettier --write",
       "eslint --ext .ts,.tsx,.js,.jsx --fix --color src"
     ]
-  },
-  "config": {
-    "forge": {
-      "packagerConfig": {},
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "saddle"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {}
-        }
-      ],
-      "plugins": [
-        [
-          "@electron-forge/plugin-webpack",
-          {
-            "mainConfig": "./webpack.main.config.js",
-            "renderer": {
-              "config": "./webpack.renderer.config.js",
-              "entryPoints": [
-                {
-                  "html": "./assets/index.html",
-                  "js": "./src/renderer/renderer.tsx",
-                  "name": "main_window"
-                }
-              ]
-            },
-            "port": 9876,
-            "loggerPort": 9877
-          }
-        ]
-      ]
-    }
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
@@ -104,7 +57,9 @@
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.6",
     "@types/react-hot-loader": "^4.1.1",
+    "@types/react-router-dom": "^5.1.5",
     "@types/react-test-renderer": "^16.9.2",
+    "@types/styled-components": "^5.1.0",
     "@typescript-eslint/eslint-plugin": "2.29.0",
     "@typescript-eslint/parser": "2.29.0",
     "babel-core": "7.0.0-bridge.0",
@@ -132,6 +87,7 @@
     "husky": "^4.2.5",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^25.4.0",
+    "jest-runner-tsc": "^1.6.0",
     "lint-staged": "^10.1.7",
     "node-loader": "^0.6.0",
     "node-sass": "^4.14.0",
@@ -148,6 +104,10 @@
     "webpack": "^4.43.0"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.28",
+    "@fortawesome/free-solid-svg-icons": "^5.13.0",
+    "@fortawesome/react-fontawesome": "^0.1.9",
+    "@material-ui/core": "^4.9.12",
     "electron-is-dev": "^1.2.0",
     "electron-squirrel-startup": "^1.0.0",
     "lodash": "^4.17.15",
@@ -155,6 +115,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-hot-loader": "^4.12.20",
-    "react-router-dom": "^5.1.2"
+    "react-router-dom": "^5.1.2",
+    "styled-components": "^5.1.0"
   }
 }

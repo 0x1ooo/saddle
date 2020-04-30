@@ -43,8 +43,3 @@ export function makeLoggerOptions(
     customOptions
   );
 }
-
-function isFileEnabled() {
-  console.log('node env', process.env.NODE_ENVIRONMENT);
-  return process.env.NODE_ENVIRONMENT === 'production';
-}

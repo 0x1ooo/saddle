@@ -3,6 +3,14 @@
 /* Renderer -> Main IPC Messages */
 export class R2M {
   static readonly PROXY_COMMAND = 'ask-proxy-command';
+
+  static readonly WINDOW_CLOSE = 'ask-close-wnd';
+
+  static readonly WINDOW_MINIMIZE = 'ask-minimize-wnd';
+
+  static readonly WINDOW_MAXIMIZE = 'ask-maximize-wnd';
+
+  static readonly WINDOW_OPEN = 'ask-open-window';
 }
 
 /** Enums of the commands sent by UI process for proxy controlling */
@@ -11,3 +19,5 @@ export enum ProxyUICommand {
   Global,
   PAC,
 }
+
+export type WindowKey = 'main' | 'about';
