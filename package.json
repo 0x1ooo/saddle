@@ -12,8 +12,8 @@
     "lint": "eslint --ext .ts,.tsx,.js,.jsx src --color",
     "format": "prettier --write",
     "test.patch": "node scripts/fix-jest-electron-bug.js",
-    "test.main": "yarn test.patch && yarn jest \"src/(@common|main)\" --notify --config=jest.main.config.js --detectOpenHandles --passWithNoTests",
-    "test.renderer": "yarn test.patch && yarn jest \"src/(@common|renderer)\" --notify --config=jest.renderer.config.js --detectOpenHandles --passWithNoTests",
+    "test.main": "yarn test.patch && yarn jest \"src/(@common|@data|main)\" --notify --config=jest.main.config.js --detectOpenHandles --passWithNoTests",
+    "test.renderer": "yarn test.patch && yarn jest \"src/(@common|@data|renderer)\" --notify --config=jest.renderer.config.js --detectOpenHandles --passWithNoTests",
     "test.all": "yarn test.main && yarn test.renderer"
   },
   "keywords": [],

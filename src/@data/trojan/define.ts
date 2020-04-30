@@ -14,19 +14,19 @@ export enum TrojanLogLevel {
 }
 export function getTrojanLogLevel(level: LogLevel) {
   switch (level) {
-    case 'ALL':
+    case LogLevel.All:
       return TrojanLogLevel.All;
-    case 'TRACE':
-    case 'DEBUG':
+    case LogLevel.Trace:
+    case LogLevel.Debug:
       return TrojanLogLevel.Debug;
-    case 'INFO':
+    case LogLevel.Info:
       return TrojanLogLevel.Info;
-    case 'WARN':
+    case LogLevel.Warn:
       return TrojanLogLevel.Warning;
-    case 'ERROR':
+    case LogLevel.Error:
       return TrojanLogLevel.Error;
-    case 'FATAL':
-    case 'MARK':
+    case LogLevel.Fatal:
+    case LogLevel.Mark:
       return TrojanLogLevel.Fatal;
     default:
       return TrojanLogLevel.None;

@@ -3,16 +3,17 @@ import merge from 'lodash/merge';
 import { Configuration } from 'log4js';
 import path from 'path';
 
-export type LogLevel =
-  | 'ALL'
-  | 'TRACE'
-  | 'DEBUG'
-  | 'INFO'
-  | 'WARN'
-  | 'ERROR'
-  | 'FATAL'
-  | 'MARK'
-  | 'OFF';
+export enum LogLevel {
+  All = 'ALL',
+  Trace = 'TRACE',
+  Debug = 'DEBUG',
+  Info = 'INFO',
+  Warn = 'WARN',
+  Error = 'ERROR',
+  Fatal = 'FATAL',
+  Mark = 'MARK',
+  Off = 'OFF',
+}
 export function makeLoggerOptions(
   logDir: string,
   logFilename: string,

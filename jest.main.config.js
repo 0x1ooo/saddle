@@ -3,6 +3,7 @@ module.exports = {
   testEnvironment: 'node',
   moduleNameMapper: {
     '@common/(.*)': '<rootDir>/src/@common/$1',
+    '@data/(.*)': '<rootDir>/src/@data/$1',
     'main/(.*)': '<rootDir>/src/main/$1',
     'renderer/(.*)': '<rootDir>/src/renderer/$1',
   }

@@ -1,6 +1,6 @@
 import { SystemConfig } from '@data/app/system';
 
-export enum ServerType {
+export enum ProxyType {
   Unknown,
   Trojan,
 }
@@ -8,7 +8,7 @@ export enum ServerType {
 export interface ServerMeta {
   readonly id: string;
   readonly name: string;
-  readonly type: ServerType;
+  readonly type: ProxyType;
   readonly selected: boolean;
 }
 

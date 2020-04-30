@@ -1,4 +1,4 @@
-import { makeLoggerOptions } from '@common/log';
+import { LogLevel, makeLoggerOptions } from '@common/log';
 import { ensureDirSync } from '@common/utils/fs';
 import { app } from 'electron';
 import isDev from 'electron-is-dev';
@@ -14,11 +14,11 @@ function initialize() {
     categories: {
       main: {
         appenders: ['file', 'stdout'],
-        level: isDev ? 'ALL' : 'INFO',
+        level: isDev ? LogLevel.All : LogLevel.Info,
       },
       trojan: {
         appenders: ['file', 'stdout'],
-        level: 'INFO',
+        level: LogLevel.Info,
       },
     },
   });

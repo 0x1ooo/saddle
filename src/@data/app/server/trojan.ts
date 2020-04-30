@@ -1,7 +1,14 @@
-import { ServerEntry, ServerMeta, ServerType } from '@data/app/server/base';
+import { ProxyType, ServerEntry, ServerMeta } from '@data/app/server/base';
 import { servers } from '@data/app/server/manager';
 import { SystemConfig } from '@data/app/system';
-import { TrojanConf, TrojanServerConf } from '@data/trojan';
+import {
+  getTrojanLogLevel,
+  TrojanConf,
+  trojanDefaultSystemConf,
+  TrojanServerConf,
+  TrojanSystemConf,
+} from '@data/trojan';
+import assign from 'lodash/assign';
 
 export class TrojanServer extends ServerEntry {
   constructor(meta: ServerMeta, readonly conf: TrojanServerConf) {
@@ -17,10 +24,20 @@ export class TrojanServer extends ServerEntry {
 
   generate(sysConf: SystemConfig): object {
     return {
-      ...sysConf.toTrojanSystem(),
+      ...TrojanServer.convertSysConf(sysConf),
       ...this.conf,
     } as TrojanConf;
   }
+
+  static convertSysConf(sysConf: SystemConfig): TrojanSystemConf {
+    return assign(trojanDefaultSystemConf, {
+      local_addr: sysConf.allowLAN ? '0.0.0.0' : '127.0.0.1',
+      local_port: sysConf.localPort,
+      log_level: getTrojanLogLevel(sysConf.logLevel),
+      log_file: sysConf.logFilename,
+      buffer_size: sysConf.bufferSize,
+    } as TrojanSystemConf);
+  }
 }
 
-servers.registerBuilder(ServerType.Trojan, TrojanServer);
+servers.registerBuilder(ProxyType.Trojan, TrojanServer);

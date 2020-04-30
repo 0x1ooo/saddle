@@ -1,4 +1,4 @@
-import { makeLoggerOptions } from '@common/log';
+import { LogLevel, makeLoggerOptions } from '@common/log';
 import { ensureDirSync } from '@common/utils/fs';
 import { remote } from 'electron';
 import isDev from 'electron-is-dev';
@@ -26,7 +26,7 @@ function initialize() {
     categories: {
       ui: {
         appenders,
-        level: isDev ? 'ALL' : 'INFO',
+        level: isDev ? LogLevel.All : LogLevel.Info,
       },
     },
   });
