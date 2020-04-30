@@ -1,6 +1,6 @@
-import { ServerBase, ServerDetail, ServerMeta } from 'conf/app/server/base';
-import { SystemConfig } from 'conf/app/system';
-import { TrojanConf, TrojanServerConf } from 'conf/trojan';
+import { ServerBase, ServerDetail, ServerMeta } from '@data/app/server/base';
+import { SystemConfig } from '@data/app/system';
+import { TrojanConf, TrojanServerConf } from '@data/trojan';
 
 export class TrojanServer extends ServerBase {
   constructor(meta: ServerMeta, readonly conf: TrojanServerConf) {

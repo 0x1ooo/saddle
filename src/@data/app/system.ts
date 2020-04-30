@@ -3,7 +3,7 @@ import {
   getTrojanLogLevel,
   trojanDefaultSystemConf,
   TrojanSystemConf,
-} from 'conf/trojan';
+} from '@data/trojan';
 import assign from 'lodash/assign';
 
 export class SystemConfig {

@@ -6,7 +6,7 @@ function srcPaths(src) {
 
 module.exports = {
   '@common': srcPaths('src/@common'),
-  conf: srcPaths('src/conf'),
+  '@data': srcPaths('src/@data'),
   main: srcPaths('src/main'),
   renderer: srcPaths('src/renderer'),
 };
