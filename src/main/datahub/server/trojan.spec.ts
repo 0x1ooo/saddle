@@ -8,17 +8,6 @@ import { TrojanServer } from 'main/datahub/server/trojan';
 import { trojanConfigPath } from 'main/proxy/trojan';
 import exampleConfig from './trojan.example.client.json';
 
-// const testMeta = {
-//   id: '111',
-//   name: 'test',
-//   type: ProxyType.Trojan,
-// } as ServerMeta;
-// const testEssential = {
-//   remote_addr: '',
-//   remote_port: 0,
-//   password: ['1', '2'],
-// };
-
 function disposeTmpConf() {
   if (fs.existsSync(trojanConfigPath)) {
     fs.unlinkSync(trojanConfigPath);
@@ -29,7 +18,7 @@ beforeEach(() => {
   disposeTmpConf();
 });
 
-it('apply system config to Trojan format', () => {
+it('apply system settings to Trojan config fields', () => {
   const testSystem = assign({}, defaultSystemConfig, {
     logFilename: 'abc.log',
   } as SystemConfig);
@@ -50,7 +39,7 @@ it('apply system config to Trojan format', () => {
   expect(conf?.local_addr).toEqual('0.0.0.0');
 });
 
-it('apply system & server config into Trojan format', async () => {
+it('apply system & server settings into a Trojan config file', async () => {
   const testSystem = assign({}, defaultSystemConfig, {
     localPort: 1234,
     logLevel: LogLevel.Info,
