@@ -37,7 +37,7 @@ export class TrojanServer extends ServerEntry<TrojanServerConf> {
 
   /** Applies system config to the corresponding fields of a Trojan config */
   static applySysConf(sysConf: SystemConfig): TrojanSystemConf {
-    return assign(trojanDefaultSystemConf, {
+    return assign({}, trojanDefaultSystemConf, {
       local_addr: sysConf.allowLAN ? '0.0.0.0' : '127.0.0.1',
       local_port: sysConf.localPort,
       log_level: getTrojanLogLevel(sysConf.logLevel),

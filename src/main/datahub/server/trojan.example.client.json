@@ -1,0 +1,56 @@
+{
+  "run_type": "client",
+  "local_addr": "127.0.0.1",
+  "local_port": 1234,
+  "remote_addr": "example.com",
+  "remote_port": 4321,
+  "log_level": 1,
+  "log_file": "abc.log",
+  "password": ["password1", "password2"],
+  "buffer_size": 512,
+  "ssl": {
+    "verify": true,
+    "verify_hostname": true,
+    "cert": "test.crt",
+    "key": "test.key",
+    "key_password": "",
+    "cipher": "",
+    "cipher_tls13": "",
+    "curves": "",
+    "prefer_server_cipher": false,
+    "sni": "",
+    "alpn": ["http/1.1", "h2"],
+    "session_ticket": true,
+    "reuse_session": true,
+    "fingerprint": "auto"
+  },
+  "tcp": {
+    "no_delay": true,
+    "keep_alive": true,
+    "reuse_port": false,
+    "prefer_ipv4": false,
+    "fast_open": false,
+    "fast_open_qlen": 20
+  },
+  "mux": {
+    "enabled": false,
+    "concurrency": 8,
+    "idle_timeout": 60
+  },
+  "router": {
+    "enabled": false,
+    "bypass": ["geoip:cn", "geosite:cn", "geosite:private"],
+    "proxy": [],
+    "block": ["geosite:category-ads"],
+    "route_by_ip": false,
+    "route_by_ip_on_nonmatch": false,
+    "default_policy": "proxy"
+  },
+  "websocket": {
+    "enabled": false,
+    "path": "",
+    "hostname": "",
+    "obfuscation_password": "",
+    "double_tls": true
+  }
+}
