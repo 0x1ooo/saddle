@@ -33,7 +33,7 @@
     ],
     "{src,test,mocks}/**/*.{js,ts,tsx}": [
       "prettier --write",
-      "eslint --ext .ts,.tsx,.js,.jsx --fix --color src"
+      "eslint --fix --color"
     ]
   },
   "devDependencies": {
