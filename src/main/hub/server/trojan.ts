@@ -8,7 +8,7 @@ import {
 } from '@model/trojan';
 import fs from 'fs';
 import assign from 'lodash/assign';
-import { ServerEntry } from 'main/datahub/server/entry';
+import { ServerEntry } from 'main/hub/server/entry';
 import { trojanConfigPath } from 'main/proxy/trojan';
 
 export class TrojanServer extends ServerEntry<TrojanServerConf> {
@@ -25,7 +25,7 @@ export class TrojanServer extends ServerEntry<TrojanServerConf> {
       ...this.conf,
     } as TrojanConf;
     return new Promise<void>((resolve, reject) =>
-      fs.writeFile(trojanConfigPath, JSON.stringify(conf), (err) => {
+      fs.writeFile(trojanConfigPath, JSON.stringify(conf, null, 2), (err) => {
         if (err) {
           reject(err);
         } else {

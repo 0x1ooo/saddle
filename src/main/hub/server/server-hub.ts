@@ -1,7 +1,7 @@
 import { AppConfig } from '@model/app';
 import { isServerConfig, ProxyType, ServerConfig } from '@model/app/server';
-import { IServerEntryBuilder, ServerEntry } from 'main/datahub/server/entry';
-import { TrojanServer } from 'main/datahub/server/trojan';
+import { IServerEntryBuilder, ServerEntry } from 'main/hub/server/entry';
+import { TrojanServer } from 'main/hub/server/trojan';
 import log from 'main/log';
 
 /** The map of proxy type to its `ServerEntry` type */

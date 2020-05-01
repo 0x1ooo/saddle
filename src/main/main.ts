@@ -1,5 +1,6 @@
 import { app, BrowserWindow } from 'electron';
 import isDev from 'electron-is-dev';
+import { appHub } from 'main/hub';
 import log from 'main/log';
 import { proxyService } from 'main/proxy';
 import { disposeTray, initTray } from 'main/tray';
@@ -30,6 +31,7 @@ async function startup() {
     );
     await installExtension([REACT_DEVELOPER_TOOLS]);
   }
+  await appHub.initialize();
   initTray();
   await proxyService.initialize();
   await windowManager.initialize();

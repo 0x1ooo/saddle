@@ -1,0 +1,1 @@
+export { appHub } from './app';

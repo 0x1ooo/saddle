@@ -1,6 +1,6 @@
 import { ProxyType, ServerConfig } from '@model/app/server';
-import { ServerHub } from 'main/datahub/server/server-hub';
-import { TrojanServer } from 'main/datahub/server/trojan';
+import { ServerHub } from 'main/hub/server/server-hub';
+import { TrojanServer } from 'main/hub/server/trojan';
 
 const goodTrojanData = {
   meta: {

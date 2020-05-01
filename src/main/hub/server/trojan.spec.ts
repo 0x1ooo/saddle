@@ -4,7 +4,7 @@ import { defaultSystemConfig, SystemConfig } from '@model/app/system';
 import { TrojanLogLevel, TrojanServerConf } from '@model/trojan';
 import fs from 'fs';
 import assign from 'lodash/assign';
-import { TrojanServer } from 'main/datahub/server/trojan';
+import { TrojanServer } from 'main/hub/server/trojan';
 import { trojanConfigPath } from 'main/proxy/trojan';
 import exampleConfig from './trojan.example.client.json';
 

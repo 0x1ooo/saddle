@@ -1,0 +1,25 @@
+{
+  "system": {
+    "logLevel": "WARN",
+    "logFilename": "app.log",
+    "launchOnStartup": false,
+    "allowLAN": false,
+    "localPort": 7890,
+    "bufferSize": 512
+  },
+  "servers": [
+    {
+      "meta": {
+        "id": "7132a43f-05b7-449a-aba9-44fbd2e45301",
+        "name": "test server",
+        "type": "trojan",
+        "selected": true
+      },
+      "conf": {
+        "remote_addr": "your_server",
+        "remote_port": 443,
+        "password": ["your_password"]
+      }
+    }
+  ]
+}
