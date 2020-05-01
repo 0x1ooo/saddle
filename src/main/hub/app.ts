@@ -1,5 +1,6 @@
 import { ensureDir, fsExist } from '@common/utils/fs';
 import { AppConfig, defaultAppConfig, readAppConfig } from '@model/app';
+import { ServerConfig } from '@model/app/server';
 import { app } from 'electron';
 import isDev from 'electron-is-dev';
 import fs from 'fs';
@@ -15,9 +16,28 @@ const appConfigPath = isDev
   ? path.join(appConfigDir, appConfigFilename)
   : path.join(appConfigDir, appConfigFilename);
 
+/** `AppHub` is for manipulating an app config in the runtime.
+ *
+ * It loads the app config on initialization if a config file is found,
+ * or use default settings in new environment. Then it distributes the
+ * loaded settings to downstream data hubs such as `ServerHub`.
+ *
+ * `AppHub` is also a subscriber to downstream data hubs, so to react
+ * on inner data changes. It updates and saves the latest config on
+ * any data change.
+ */
 export class AppHub {
   appConfig: AppConfig = defaultAppConfig;
 
+  private _listeners = {
+    serversUpdated: this._onServersUpdated.bind(this),
+  };
+
+  /** Initialization process tries to
+   * - read an app config file, or use default settings if not found.
+   * - update the saved config file to persist any new setting provided in new versions as defaults
+   * - load data into downstream hubs & register event listeners for downstream data changes
+   */
   async initialize() {
     log.main().trace('trying to load app config @', appConfigPath);
     await ensureDir(appConfigDir);
@@ -42,12 +62,20 @@ export class AppHub {
     }
     serverHub.load(this.appConfig);
     this.save();
+    this._register();
   }
 
+  /** Clean up event listeners and occupied resources */
+  cleanup() {
+    this._unregister();
+  }
+
+  /** Loads app config from raw JSON and merges with the current one */
   loadConfig(raw: string) {
     this.appConfig = readAppConfig(raw, this.appConfig);
   }
 
+  /** Persists the app config in a local JSON file */
   async save() {
     try {
       const data = JSON.stringify(this.appConfig, null, 2);
@@ -64,6 +92,22 @@ export class AppHub {
     } catch (e) {
       log.main().error('failed writing app config', e);
     }
+  }
+
+  private _register() {
+    serverHub.on('updated', this._listeners.serversUpdated);
+  }
+
+  private _unregister() {
+    serverHub.off('updated', this._listeners.serversUpdated);
+  }
+
+  private async _onServersUpdated(servers: ServerConfig[]) {
+    this.appConfig = {
+      ...this.appConfig,
+      servers,
+    };
+    await this.save();
   }
 }
 

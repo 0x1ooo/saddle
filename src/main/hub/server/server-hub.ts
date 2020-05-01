@@ -1,3 +1,4 @@
+import { Events } from '@common/utils/events';
 import { AppConfig } from '@model/app';
 import { isServerConfig, ProxyType, ServerConfig } from '@model/app/server';
 import { IServerEntryBuilder, ServerEntry } from 'main/hub/server/entry';
@@ -9,13 +10,18 @@ const proxyServerBuilders = new Map<ProxyType, IServerEntryBuilder>([
   [ProxyType.Trojan, TrojanServer],
 ]);
 
+/** Defines what events the `ServerHub` would emit */
+interface ServerHubEvents {
+  updated: ServerConfig[];
+}
+
 /** Server hub reads and writes server entries from a config file,
  * and keeps the config file updated on data changes.
  *
  * It's also responsible to detect the changes that may change
  * the active proxy settings.
  */
-export class ServerHub {
+export class ServerHub extends Events<ServerHubEvents> {
   private _builders = new Map<ProxyType, IServerEntryBuilder>();
 
   private _servers: ServerEntry[] = [];

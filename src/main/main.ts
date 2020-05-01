@@ -52,6 +52,7 @@ async function cleanup(event: Event) {
   event.preventDefault();
   // Async cleanup codes here
   await proxyService.cleanup();
+  await appHub.cleanup();
 
   log.main().info('things have been cleaned up');
   log.main().warn('bye.');
